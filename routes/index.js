@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Handlebars = require('handlebars');
+const Profile = require('../models/userProfiles');
+const GameRoom = require('../models/gameRooms');
 
 router.get('/', (req, res, next) => {
   if (!req.session.user) {
@@ -13,10 +15,16 @@ router.get('/', (req, res, next) => {
   }
 });
 
-// router.get('/new', (req, res, next) => {
-// });
+router.get('/new', (req, res, next) => {
+  res.render('index', {title: 'Index'});
+});
 
 router.get('/game/:id', (req, res, next) => {
+  var item = {
+    itemUrl: req.params.id,
+    activeUsers: 1
+  }
+  var gameRoom = new Mongoose.model('gameRooms', item);
   res.render('game', {title: 'Question', num: "1"});
 });
 

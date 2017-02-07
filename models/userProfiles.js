@@ -1,4 +1,4 @@
-var mongoose = require('mongoose')
+var mongoose = require('mongoose');
 
 var userProfiles = new mongoose.Schema({
   name: String,
@@ -7,4 +7,6 @@ var userProfiles = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 })
 
-module.exports = mongoose.model('userProfiles', userProfiles)
+var userProfile = mongoose.model('userProfiles', userProfiles)
+
+module.exports = userProfile

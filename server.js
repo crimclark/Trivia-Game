@@ -23,7 +23,6 @@ app.use(session({secret: 'keyboard cat', resave: false, saveUninitialized: true}
 app.engine('hbs', hbs({extname: 'hbs', defaultLayout: 'main', layoutsDir: path.join(__dirname, 'views/layouts/')}))
 app.set('view engine', 'hbs')
 
-
 // ROUTES
 app.use('/', require('./routes/index'))
 app.use('/auth', require('./routes/auth'));

@@ -1,11 +1,13 @@
-var mongoose = require('mongoose')
+var mongoose = require('mongoose');
 
 var userProfiles = new mongoose.Schema({
-  f_name: String,
-  profileName: String,
+  _id: Number,
+  name: String,
   avatar: String,
   score: { gamesWon: Number, gamesPlayed: Number},
   createdAt: { type: Date, default: Date.now }
 })
 
-module.exports = mongoose.model('userProfiles', userProfiles)
+var userProfile = mongoose.model('userProfiles', userProfiles)
+
+module.exports = userProfile

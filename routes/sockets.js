@@ -6,8 +6,6 @@ function sockets(io) {
     socket.on('room', function(roomName) {
       socket.join(roomName);
 
-      getUsersInRoomNumber(io, roomName);
-
       console.log('joined room ' + roomName);
 
       socket.on('red click', function() {
@@ -24,9 +22,3 @@ function sockets(io) {
 module.exports = sockets;
 
 
-var getUsersInRoomNumber = function(io, roomName) {
-    var room = io.nsps['/'].adapter.rooms[roomName];
-    // console.log(`number of users in room ${roomName} is ${Object.keys(room).length}`);
-    console.log(Object.keys);
-    return Object.keys(room).length;
-}

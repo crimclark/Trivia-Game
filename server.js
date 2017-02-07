@@ -9,6 +9,9 @@ const morgan = require('morgan')
 const path = require('path')
 const app = express()
 
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+
 // CONFIG
 require('./db/config')
 app.use(morgan('dev'))
@@ -27,7 +30,20 @@ app.use('/profile', require('./routes/profile'));
 app.use('/example', require('./routes/example'))
 app.use(require('./routes/error'))
 
+//SOCKET
+io.on('connection', socket => {
+  console.log('a user connected');
+
+  socket.on('red click', function() {
+    io.emit('red click');
+  })
+
+  socket.on('green click', function(){
+    io.emit('green click');
+  })
+})
+
 const port = process.env.PORT || 3000
-app.listen(port, () => {
+http.listen(port, () => {
   console.log(`Listening on ${port}`)
 })

@@ -47,5 +47,4 @@ $startBtn.on('click', function(){
   randURL += randWord()
   console.log(randURL)
  $('form').attr('action', `${randURL}`);
-
-})
+});

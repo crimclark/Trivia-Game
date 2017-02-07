@@ -13,6 +13,6 @@ var randWord = function(){
   return randomWord;
 }
 
-console.log(randWord());
+// console.log(randWord());
 
 

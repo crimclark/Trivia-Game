@@ -44,8 +44,8 @@ socket.on('red click', function() {
 
 //ROOM URL PSEUDOCODE
 
-// startBtn.on('click', function(){
-//   console.log(randWord());
-//   // append link with url;
-// })
+startBtn.on('click', function(){
+  console.log(randWord());
+  // append link with url;
+})
 

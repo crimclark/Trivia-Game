@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Handlebars = require('handlebars');
+const Profile = require('../models/userProfiles');
+const GameRoom = require('../models/gameRooms');
 
 router.get('/', (req, res, next) => {
   if (!req.session.user) {
@@ -13,10 +15,18 @@ router.get('/', (req, res, next) => {
   }
 });
 
-// router.get('/new', (req, res, next) => {
-// });
+router.get('/new', (req, res, next) => {
+  res.render('new', {title: 'New Game'});
+});
 
 router.get('/game/:id', (req, res, next) => {
+  console.log(req.params);
+  var fullUrl = '/game/' + req.params.id;
+  var gameRoom = new GameRoom({
+    url: fullUrl,
+    activeUsers: 1,
+  });
+  gameRoom.save();
   res.render('game', {title: 'Question', num: "1"});
 });
 

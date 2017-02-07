@@ -7,14 +7,14 @@ router.get('/', (req, res, next) => {
     res.render('index', {title: 'Login Page'});
   } else {
     const user = JSON.stringify(req.session.user)
-    res.send(`${user}`)
+    // res.send(`${user}`)
+    res.render('new', {title: 'New Game'});
     // res.render(create new game)
   }
 });
 
-router.get('/new', (req, res, next) => {
-  res.render('new', {title: 'New Game'});
-});
+// router.get('/new', (req, res, next) => {
+// });
 
 router.get('/game/:id', (req, res, next) => {
   res.render('game', {title: 'Question', num: "1"});

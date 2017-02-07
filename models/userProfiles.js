@@ -1,6 +1,7 @@
-var mongoose = require('mongoose')
+var mongoose = require('mongoose');
 
 var userProfiles = new mongoose.Schema({
+  _id: Number,
   f_name: String,
   profileName: String,
   avatar: String,
@@ -8,4 +9,6 @@ var userProfiles = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 })
 
-module.exports = mongoose.model('userProfiles', userProfiles)
+var userProfile = mongoose.model('userProfiles', userProfiles)
+
+module.exports = userProfile

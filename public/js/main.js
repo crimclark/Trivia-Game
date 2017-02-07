@@ -13,11 +13,17 @@ var redBtn = $('#red');
 // })
 
 greenBtn.on('click', function(){
-  greenBtn.css('color', 'green');
+  socket.emit('green click')
 });
 
 redBtn.on('click', function(){
-  redBtn.css('color', 'red');
+  socket.emit('red click')
 });
 
-socket.emit('MyEvent', {Event1: 'test'});
+socket.on('green click', function() {
+  greenBtn.css('color', 'green');
+});
+
+socket.on('red click', function() {
+  redBtn.css('color', 'red');
+});

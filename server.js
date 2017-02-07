@@ -32,8 +32,12 @@ app.use(require('./routes/error'))
 io.on('connection', socket => {
   console.log('a user connected');
 
-  socket.on('MyEvent', data => {
-    console.log('my event has fired and contains ' + data);
+  socket.on('red click', function() {
+    io.emit('red click');
+  })
+
+  socket.on('green click', function(){
+    io.emit('green click');
   })
 })
 

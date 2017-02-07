@@ -13,7 +13,7 @@ var redBtn = $('#red');
 // })
 
 greenBtn.on('click', function(){
-  socket.emit('green click', data)
+  socket.emit('green click')
 });
 
 redBtn.on('click', function(){

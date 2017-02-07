@@ -29,17 +29,21 @@ app.use('/example', require('./routes/example'))
 app.use(require('./routes/error'))
 
 //SOCKET
-io.on('connection', socket => {
-  console.log('a user connected');
+// io.on('connection', socket => {
+//   console.log('a user connected');
 
-  socket.on('red click', function() {
-    io.emit('red click');
-  })
+//   socket.on('red click', function() {
+//     io.emit('red click');
+//   })
 
-  socket.on('green click', function(){
-    io.emit('green click');
-  })
-})
+//   socket.on('green click', function(){
+//     io.emit('green click');
+//   })
+// })
+
+var sockets = require('./routes/sockets')(io);
+
+// sockets(io);
 
 const port = process.env.PORT || 3000
 http.listen(port, () => {

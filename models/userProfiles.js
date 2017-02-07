@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 
 var userProfiles = new mongoose.Schema({
+  _id: Number,
   name: String,
   avatar: String,
   score: { gamesWon: Number, gamesPlayed: Number},

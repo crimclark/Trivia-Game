@@ -2,6 +2,8 @@ var socket = io();
 
 var room = window.location.pathname;
 
+var startBtn = $('#start-btn');
+
 socket.on('connect', function() {
   console.log('client connected');
   socket.emit('room', room);
@@ -42,7 +44,8 @@ socket.on('red click', function() {
 
 //ROOM URL PSEUDOCODE
 
-// createGameBtn.on('click', function(){
-//   generate random string for url;
-//   append link with url;
+// startBtn.on('click', function(){
+//   console.log(randWord());
+//   // append link with url;
 // })
+

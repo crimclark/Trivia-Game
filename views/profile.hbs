@@ -1,3 +1,10 @@
+<div class="container">
+   <h1>{{ title }}</h1>
+   <p>Username: {{ username }}</p>
+   <p>Games Won: {{ wins }}</p>
+   <p>Games Played: {{ totalGames }}</p>
+</div>
+
 <h1>Profile Page</h1>
 
 {{!-- Display User Information --}}
@@ -5,3 +12,4 @@
 <img src="{{user.image.url}}">
 {{!-- Display a link to logout --}}
 <a href="/auth/logout">Logout</a>
+

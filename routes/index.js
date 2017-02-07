@@ -20,11 +20,13 @@ router.get('/new', (req, res, next) => {
 });
 
 router.get('/game/:id', (req, res, next) => {
-  var item = {
-    itemUrl: req.params.id,
-    activeUsers: 1
-  }
-  var gameRoom = new Mongoose.model('gameRooms', item);
+  console.log(req.params);
+  var fullUrl = '/game/' + req.params.id;
+  var gameRoom = new GameRoom({
+    url: fullUrl,
+    activeUsers: 1,
+  });
+  gameRoom.save();
   res.render('game', {title: 'Question', num: "1"});
 });
 

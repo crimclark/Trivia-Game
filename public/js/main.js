@@ -13,7 +13,7 @@ var redBtn = $('#red');
 // })
 
 greenBtn.on('click', function(){
-  socket.emit('green click')
+  socket.emit('green click', data)
 });
 
 redBtn.on('click', function(){
@@ -27,3 +27,20 @@ socket.on('green click', function() {
 socket.on('red click', function() {
   redBtn.css('color', 'red');
 });
+
+
+
+
+//ANSWER CLICK PSEUDOCODE
+
+// answer.on('click', function(answerString) {
+//   socket.emit('answer click', answerString)
+// });
+
+// socket.on('answer click', function(answer) {
+//  if (answer === 'correct') {
+//    turn answer green
+//  } else {
+//   turn answer red
+//  }
+// })

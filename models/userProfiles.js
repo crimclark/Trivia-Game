@@ -2,8 +2,7 @@ var mongoose = require('mongoose');
 
 var userProfiles = new mongoose.Schema({
   _id: Number,
-  f_name: String,
-  profileName: String,
+  name: String,
   avatar: String,
   score: { gamesWon: Number, gamesPlayed: Number},
   createdAt: { type: Date, default: Date.now }

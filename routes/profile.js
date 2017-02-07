@@ -33,14 +33,14 @@ router.get('/me', (req, res, next) => {
         console.log('no user in db')
         var player = new userProfile({
           _id: req.session.user.id,
-          f_name: req.session.user.name.givenName,
-          profileName: 'MyProfileName',
+          name: req.session.user.name.givenName,
           avatar: req.session.user.image.url,
         })
         player.save();
       }
       else if(results) {
         console.log('user exists in db')
+
       }
       return res.redirect('/');
     })

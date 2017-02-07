@@ -1,7 +1,7 @@
 var mongoose = require('mongoose')
 
 var gameRooms = new mongoose.Schema({
-  url: String,
+  url: {type: String, unique: true},
   activeUsers: Number,
   category: String
 });

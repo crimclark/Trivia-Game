@@ -16,7 +16,7 @@ router.get('/new', (req, res, next) => {
   res.render('new', {title: 'New Game'});
 });
 
-router.get('/game', (req, res, next) => {
+router.get('/game/:id', (req, res, next) => {
   res.render('game', {title: 'Question', num: "1"});
 });
 

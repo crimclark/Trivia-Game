@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Handlebars = require('handlebars');
+const getQuestion = require('../lib/getQuestion.js');
+const answerShuffle = require('../lib/answerShuffle.js')
 
 router.get('/', (req, res, next) => {
   if (!req.session.user) {
@@ -17,7 +19,11 @@ router.get('/', (req, res, next) => {
 // });
 
 router.get('/game/:id', (req, res, next) => {
-  res.render('game', {title: 'Question', num: "1"});
+  getQuestion(function(data, question) {
+    answerShuffle.answerShuffle(data, function(shuffleData) {
+      res.render('game', {question: question, answers: shuffleData});
+    })
+  })
 });
 
 router.get('/score', (req, res, next) => {

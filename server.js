@@ -23,23 +23,16 @@ app.use(session({secret: 'keyboard cat', resave: false, saveUninitialized: true}
 app.engine('hbs', hbs({extname: 'hbs', defaultLayout: 'main', layoutsDir: path.join(__dirname, 'views/layouts/')}))
 app.set('view engine', 'hbs')
 
+
 // ROUTES
 app.use('/', require('./routes/index'))
+app.use('/auth', require('./routes/auth'));
+app.use('/profile', require('./routes/profile'));
 app.use('/example', require('./routes/example'))
 app.use(require('./routes/error'))
 
-//SOCKET
-io.on('connection', socket => {
-  console.log('a user connected');
-
-  socket.on('red click', function() {
-    io.emit('red click');
-  })
-
-  socket.on('green click', function(){
-    io.emit('green click');
-  })
-})
+// SOCKET
+const sockets = require('./routes/sockets')(io);
 
 const port = process.env.PORT || 3000
 http.listen(port, () => {

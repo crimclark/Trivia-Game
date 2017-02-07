@@ -1,1 +1,12 @@
 /**/
+body {
+  margin-top: 2%;
+}
+.mc-btn {
+  display: block;
+  width: 50%;
+  min-width: 200px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}

@@ -1,6 +1,7 @@
 const express = require('express');
 const request = require('request');
 const router = express.Router();
+const userProfile = require('../models/userProfiles.js')
 
 router.get('/', (req, res, next) => {
   const user = req.session.user;
@@ -20,9 +21,29 @@ router.get('/me', (req, res, next) => {
     headers: { 'Authorization' : `Bearer ${access_token}`}
   }
   request(options, (err, response, body) => {
-    const user = JSON.parse(body);
-    req.session.user = user;
-    return res.redirect('/');
+    const userData = JSON.parse(body);
+    req.session.user = userData;
+    // Database work
+    userProfile.findById({_id: req.session.user.id }, function(err, results) {
+      if (err) {
+        console.log(err)
+      }
+
+      if (!results) {
+        console.log('no user in db')
+        var player = new userProfile({
+          _id: req.session.user.id,
+          f_name: req.session.user.name.givenName,
+          profileName: 'MyProfileName',
+          avatar: req.session.user.image.url,
+        })
+        player.save();
+      }
+      else if(results) {
+        console.log('user exists in db')
+      }
+      return res.redirect('/');
+    })
   })
 });
 

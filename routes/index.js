@@ -39,7 +39,10 @@ router.get('/score', (req, res, next) => {
 });
 
 router.get('/user', (req, res, next) => {
-  res.render('profile', {title: 'Player Profile'});
+  var userId = req.session.user.id;
+  Profile.findOne({_id: userId}, (err, userData) => {
+    res.render('profile', {title: 'Player Profile', info: userData});
+  });
 });
 
 router.get('/test', (req, res, next) => {

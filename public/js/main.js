@@ -1,6 +1,11 @@
 var socket = io();
 
-console.log('hello');
+var room = window.location.pathname;
+
+socket.on('connect', function() {
+  console.log('client connected');
+  socket.emit('room', room);
+});
 
 var greenBtn = $('#green');
 var redBtn = $('#red');
@@ -33,4 +38,11 @@ socket.on('red click', function() {
 //  } else {
 //   turn answer red
 //  }
+// })
+
+//ROOM URL PSEUDOCODE
+
+// createGameBtn.on('click', function(){
+//   generate random string for url;
+//   append link with url;
 // })

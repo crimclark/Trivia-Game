@@ -28,6 +28,15 @@ app.use('/', require('./routes/index'))
 app.use('/example', require('./routes/example'))
 app.use(require('./routes/error'))
 
+//SOCKET
+io.on('connection', socket => {
+  console.log('a user connected');
+
+  socket.on('MyEvent', data => {
+    console.log('my event has fired and contains ' + data);
+  })
+})
+
 const port = process.env.PORT || 3000
 http.listen(port, () => {
   console.log(`Listening on ${port}`)

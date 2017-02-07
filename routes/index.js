@@ -10,6 +10,14 @@ router.get('/new', (req, res, next) => {
   res.render('new', {title: 'New Game'});
 })
 
+router.get('/game', (req, res, next) => {
+  res.render('game', {title: 'Question', num: "1"});
+})
+
+router.get('/score', (req, res, next) => {
+  res.render('score', {title: 'Score'});
+})
+
 router.get('/user', (req, res, next) => {
   res.render('profile', {title: 'Player Profile'});
 })

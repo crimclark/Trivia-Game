@@ -41,7 +41,6 @@ function renderHtml(question) {
       html += '<li class="mc-list"><button class="mc-btn incorrect" data-correct="false">' + answer[i].answer + '</button></li>';
     }
   }
-  // console.log(html);
   $('#mc').html(html);
 }
 
@@ -58,7 +57,6 @@ $('body').on('click', '.correct', function(event) {
 });
 
 socket.on('correct click', function(data) {
-  // $correct.addClass('green');
   console.log(data.answer)
   $('li').each( function(el) {
     if ($(this).text() === data.answer) {
@@ -81,8 +79,6 @@ $('body').on('click', '.incorrect', function(event) {
 socket.on('incorrect click', function(data) {
   // console.log(data);
   $('li').each( function(el) {
-    // console.log($(this));
-    // console.log($(this).text());
     if ($(this).text() === data) {
       $(this).children().addClass('red');
     }

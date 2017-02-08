@@ -10,33 +10,52 @@ socket.on('connect', function() {
   socket.emit('room', room);
 });
 
-var greenBtn = $('#green');
-var redBtn = $('#red');
+// var greenBtn = $('#green');
+// var redBtn = $('#red');
 
-greenBtn.on('click', function(){
-  socket.emit('green click')
-});
+// greenBtn.on('click', function(){
+//   socket.emit('green click')
+// });
 
-redBtn.on('click', function(){
-  socket.emit('red click')
-});
+// redBtn.on('click', function(){
+//   socket.emit('red click')
+// });
 
-socket.on('green click', function() {
-  greenBtn.css('color', 'green');
-});
+// socket.on('green click', function() {
+//   greenBtn.css('color', 'green');
+// });
 
-socket.on('red click', function() {
-  redBtn.css('color', 'red');
-});
+// socket.on('red click', function() {
+//   redBtn.css('color', 'red');
+// });
 
 // ANSWER CLICK PSEUDOCODE
 $correct.on('click', function() {
-  socket.emit('correct click');
+  $.get('/question', function(question) {
+    socket.emit('correct click', question);
+  })
 });
 
-socket.on('correct click', function() {
+socket.on('correct click', function(question) {
   $correct.addClass('green');
   // ajax => next question
+  // $.get('/question', function(question) {
+    // console.log(question);
+    // var $question = $('.question');
+    // $question.text(question.question);
+    var html = '';
+    var answer = question.answers;
+    for (var i = 0; i < question.answers.length; i++) {
+      if (answer[i].correct) {
+        html += '<li class="mc-list"><button class="mc-btn correct" data-correct="true">' + answer[i].answer + '</button></li>';
+      } else {
+        html += '<li class="mc-list"><button class="mc-btn incorrect" data-correct="false">' + answer[i].answer + '</button></li>';
+      }
+    }
+    console.log(html);
+    $('#mc').html(html);
+  // }
+  // )
 });
 
 // WRONG ANSWER CLICK

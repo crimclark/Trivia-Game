@@ -19,6 +19,13 @@ router.get('/new', (req, res, next) => {
   res.render('new', {title: 'New Game'});
 });
 
+router.get('/question', (req, res, next) => {
+  getQuestion(function(data, question) {
+    answerShuffle.answerShuffle(data, function(shuffleData) {
+      res.send({question: question, answers: shuffleData});
+    })
+  })
+})
 
 router.get('/game/:id', (req, res, next) => {
   var fullUrl = '/game/' + req.params.id;

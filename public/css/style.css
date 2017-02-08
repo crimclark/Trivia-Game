@@ -2,7 +2,7 @@
 body {
   margin-top: 2%;
 }
-.mc-btn {
+.mc-list {
 /*  display: block;
   width: 50%;
   min-width: 200px;
@@ -10,4 +10,12 @@ body {
   overflow: hidden;
   white-space: nowrap;*/
   list-style: none;
+}
+.green {
+  background-color: palegreen;
+  border-style: none;
+}
+.red {
+  background-color: lightcoral;
+  border-style: none;
 }

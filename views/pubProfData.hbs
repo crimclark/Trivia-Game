@@ -1,0 +1,18 @@
+<nav>
+  <a href="/">Home</a>
+  <a href="/user">Profile</a>
+  <a href="/browse">Browse Profiles</a>
+</nav>
+<div class="container">
+   <h1>{{ title }}</h1>
+   <p>Username: {{ info.name }}</p>
+   <p>Games Won: {{ wins }}</p>
+   <p>Games Played: {{ totalGames }}</p>
+</div>
+
+<h1>Profile Page</h1>
+
+{{!-- Display User Information --}}
+<img src="{{ info.avatar }}">
+{{!-- Display a link to logout --}}
+

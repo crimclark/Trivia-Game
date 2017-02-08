@@ -39,7 +39,7 @@ router.get('/game/:id', (req, res, next) => {
               question: question,
               answers: shuffleData
             },
-            });
+          });
           gameRoom.save();
           res.render('game', {question: question, answers: shuffleData});
           })
@@ -48,10 +48,8 @@ router.get('/game/:id', (req, res, next) => {
       else if(results) {
         console.log('game room exists in db')
         gameRooms.find({url: fullUrl}, function(err, results) {
-          var hope = results[0].firstQuestion[0]
-          console.log(hope)
-          console.log(hope.answers)
-         res.render('game', {question: hope.question, answers: hope.answers})
+          var formatted_results = results[0].firstQuestion[0]
+         res.render('game', {question: formatted_results.question, answers: formatted_results.answers})
         })
       }
     })

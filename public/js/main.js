@@ -43,6 +43,10 @@ function renderHtml(question) {
   }
   // console.log(html);
   $('#mc').html(html);
+  // Counter
+  var counter = $('.counter').text()
+  counter++
+  $('.counter').text(counter)
 }
 
 function getQuestion(answer) {

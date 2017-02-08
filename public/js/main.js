@@ -29,17 +29,7 @@ socket.on('connect', function() {
 //   redBtn.css('color', 'red');
 // });
 
-// ANSWER CLICK PSEUDOCODE
-$('body').on('click', '.correct', function() {
-  $.get('/question', function(question) {
-    socket.emit('correct click', question);
-  })
-});
-
-socket.on('correct click', function(question) {
-  $correct.addClass('green');
-  // ajax => next question
-  console.log(question);
+function renderHtml(question) {
   var $question = $('.question');
   $question.text(question.question);
   var html = '';
@@ -51,28 +41,60 @@ socket.on('correct click', function(question) {
       html += '<li class="mc-list"><button class="mc-btn incorrect" data-correct="false">' + answer[i].answer + '</button></li>';
     }
   }
-  console.log(html);
+  // console.log(html);
   $('#mc').html(html);
+}
+
+function getQuestion(answer) {
+  $.get('/question', function(question) {
+    socket.emit('correct click', {question: question, answer: answer});
+  })
+}
+
+// CORRECT ANSWER CLICK
+$('body').on('click', '.correct', function(event) {
+  var answerText = $(this).text();
+  getQuestion(answerText);
+});
+
+socket.on('correct click', function(data) {
+  // $correct.addClass('green');
+  console.log(data.answer)
+  $('li').each( function(el) {
+    if ($(this).text() === data.answer) {
+      $(this).children().addClass('green');
+    }
+  })
+  // ajax => next question
+  setTimeout(function() {
+    renderHtml(data.question);
+  }, 1000);
 });
 
 // WRONG ANSWER CLICK
-
 $('body').on('click', '.incorrect', function(event) {
-  console.log($(this).text());
+  // console.log($(this).text());
   var answerText = $(this).text();
   socket.emit('incorrect click', answerText);
 });
 
 socket.on('incorrect click', function(data) {
-  console.log(data);
+  // console.log(data);
   $('li').each( function(el) {
-    console.log($(this));
-    console.log($(this).text());
-    if ($(this).text() === data)
-    $(this).children().addClass('red');
+    // console.log($(this));
+    // console.log($(this).text());
+    if ($(this).text() === data) {
+      $(this).children().addClass('red');
+    }
   })
 });
 
+$('body').on('click', '.incorrect', function() {
+  console.log($('.red').length);
+  if ($('.red').length === 1) {
+    getQuestion();
+  }
+})
 //ROOM URL PSEUDOCODE
 $startBtn.on('click', function(){
   var randURL = '/game/'

@@ -29,8 +29,7 @@ socket.on('red click', function() {
   redBtn.css('color', 'red');
 });
 
-//ANSWER CLICK PSEUDOCODE
-
+// ANSWER CLICK PSEUDOCODE
 $correct.on('click', function() {
   socket.emit('correct click');
 });
@@ -40,14 +39,21 @@ socket.on('correct click', function() {
   // ajax => next question
 });
 
+// WRONG ANSWER CLICK
 $incorrect.on('click', function(event) {
-  $(this).addClass('clicked');
-  socket.emit('incorrect click');
+  console.log($(this).text());
+  var answerText = $(this).text();
+  socket.emit('incorrect click', answerText);
 });
 
-socket.on('incorrect click', function() {
-  var $clicked = $('.clicked');
-  $clicked.addClass('red');
+socket.on('incorrect click', function(data) {
+  console.log(data);
+  $('li').each( function(el) {
+    console.log($(this));
+    console.log($(this).text());
+    if ($(this).text() === data)
+    $(this).children().addClass('red');
+  })
 });
 
 //ROOM URL PSEUDOCODE

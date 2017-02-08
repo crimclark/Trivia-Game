@@ -30,7 +30,7 @@ socket.on('connect', function() {
 // });
 
 // ANSWER CLICK PSEUDOCODE
-$correct.on('click', function() {
+$('body').on('click', '.correct', function() {
   $.get('/question', function(question) {
     socket.emit('correct click', question);
   })
@@ -39,27 +39,25 @@ $correct.on('click', function() {
 socket.on('correct click', function(question) {
   $correct.addClass('green');
   // ajax => next question
-  // $.get('/question', function(question) {
-    // console.log(question);
-    // var $question = $('.question');
-    // $question.text(question.question);
-    var html = '';
-    var answer = question.answers;
-    for (var i = 0; i < question.answers.length; i++) {
-      if (answer[i].correct) {
-        html += '<li class="mc-list"><button class="mc-btn correct" data-correct="true">' + answer[i].answer + '</button></li>';
-      } else {
-        html += '<li class="mc-list"><button class="mc-btn incorrect" data-correct="false">' + answer[i].answer + '</button></li>';
-      }
+  console.log(question);
+  var $question = $('.question');
+  $question.text(question.question);
+  var html = '';
+  var answer = question.answers;
+  for (var i = 0; i < question.answers.length; i++) {
+    if (answer[i].correct) {
+      html += '<li class="mc-list"><button class="mc-btn correct" data-correct="true">' + answer[i].answer + '</button></li>';
+    } else {
+      html += '<li class="mc-list"><button class="mc-btn incorrect" data-correct="false">' + answer[i].answer + '</button></li>';
     }
-    console.log(html);
-    $('#mc').html(html);
-  // }
-  // )
+  }
+  console.log(html);
+  $('#mc').html(html);
 });
 
 // WRONG ANSWER CLICK
-$incorrect.on('click', function(event) {
+
+$('body').on('click', '.incorrect', function(event) {
   console.log($(this).text());
   var answerText = $(this).text();
   socket.emit('incorrect click', answerText);

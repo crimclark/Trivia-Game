@@ -1,0 +1,15 @@
+<nav>
+  <a href="/">Home</a>
+  <a href="/user">Profile</a>
+  <a href="/browse">Browse Profiles</a>
+</nav>
+<div class="container">
+  <h1>{{ title }}</h1>
+  {{# each profile }}
+    <a href="user/{{ this._id }}">
+    <img src="{{ this.avatar }}">
+    <h6>Profile Name: {{ this.name }}</h6>
+    </a>
+    <br>
+  {{/each}}
+</div>

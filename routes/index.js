@@ -74,6 +74,19 @@ router.post('/user', (req, res, next) => {
   });
 });
 
+router.get('/user/:id', (req, res, next) => {
+  var userId = req.params.id;
+  Profile.findOne({_id: userId}, (err, userData) => {
+    res.render('pubProfData', {title: 'Player Profile', info: userData});
+  });
+});
+
+router.get('/browse', (req, res, next) => {
+  Profile.find({}, (err, allData) => {
+    res.render('browse',  { title: 'Browse Profiles', profile: allData });
+  });
+});
+
 router.get('/test', (req, res, next) => {
   res.render('test')
 });

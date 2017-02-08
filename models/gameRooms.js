@@ -1,9 +1,13 @@
 var mongoose = require('mongoose')
+var questionSchema = require('./question.js');
 
 var gameRooms = new mongoose.Schema({
   url: {type: String, unique: true},
   activeUsers: Number,
-  category: String
+  category: String,
+  firstQuestion: [questionSchema]
 });
 
-module.exports = mongoose.model('gameRooms', gameRooms)
+var gameRooms = mongoose.model('gameRooms', gameRooms)
+
+module.exports = gameRooms;

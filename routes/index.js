@@ -3,8 +3,8 @@ const router = express.Router();
 const Handlebars = require('handlebars');
 const getQuestion = require('../lib/getQuestion.js');
 const answerShuffle = require('../lib/answerShuffle.js')
-const Profile = require('../models/userProfiles');
-const GameRoom = require('../models/gameRooms');
+const Profile = require('../models/userProfiles.js');
+const gameRooms = require('../models/gameRooms.js');
 
 router.get('/', (req, res, next) => {
   if (!req.session.user) {
@@ -19,19 +19,42 @@ router.get('/new', (req, res, next) => {
   res.render('new', {title: 'New Game'});
 });
 
+
 router.get('/game/:id', (req, res, next) => {
   var fullUrl = '/game/' + req.params.id;
-  var gameRoom = new GameRoom({
-    url: fullUrl,
-    activeUsers: 1,
-    // *bug*
-  });
-  gameRoom.save();
-  getQuestion(function(data, question) {
-    answerShuffle.answerShuffle(data, function(shuffleData) {
-      res.render('game', {question: question, answers: shuffleData});
+  // test /game/XIttXxHc
+  gameRooms.find({url: fullUrl }, function(err, results) {
+    if (err) {
+      console.log(err)
+    }
+
+    if (results.length === 0) {
+      console.log('no game room in db');
+      getQuestion(function(data, question) {
+        answerShuffle.answerShuffle(data, function(shuffleData) {
+          var gameRoom = new gameRooms({
+            url: fullUrl,
+            activeUsers: 1,
+            firstQuestion: {
+              question: question,
+              answers: shuffleData
+            },
+            });
+          gameRoom.save();
+          res.render('game', {question: question, answers: shuffleData});
+          })
+        })
+      }
+      else if(results) {
+        console.log('game room exists in db')
+        gameRooms.find({url: fullUrl}, function(err, results) {
+          var hope = results[0].firstQuestion[0]
+          console.log(hope)
+          console.log(hope.answers)
+         res.render('game', {question: hope.question, answers: hope.answers})
+        })
+      }
     })
-  })
 });
 
 router.get('/score', (req, res, next) => {

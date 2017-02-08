@@ -19,7 +19,6 @@ function sockets(io) {
       // })
 
       socket.on('correct click', function(data){
-        console.log(data);
         io.to(roomName).emit('correct click', data);
       })
 

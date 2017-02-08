@@ -36,7 +36,6 @@ router.get('/game/:id', (req, res, next) => {
     }
 
     if (results.length === 0) {
-      console.log('no game room in db');
       getQuestion(function(data, question) {
         answerShuffle.answerShuffle(data, function(shuffleData) {
           var gameRoom = new gameRooms({
@@ -53,7 +52,6 @@ router.get('/game/:id', (req, res, next) => {
         })
       }
       else if(results) {
-        console.log('game room exists in db')
         gameRooms.find({url: fullUrl}, function(err, results) {
           var formatted_results = results[0].firstQuestion[0]
          res.render('game', {question: formatted_results.question, answers: formatted_results.answers})
@@ -61,6 +59,17 @@ router.get('/game/:id', (req, res, next) => {
       }
     })
 });
+
+router.delete('/game/:id', (req, res, next) => {
+  var fullUrl = '/game/' + req.params.id;
+  gameRooms.findOneAndRemove({url: fullUrl}, function(err) {
+    if (err) {
+      res.send(err)
+    } else {
+      res.send('you tryin to delete a game')
+    }
+  })
+})
 
 router.get('/score', (req, res, next) => {
   res.render('score', {title: 'Score'});
@@ -74,7 +83,6 @@ router.get('/user', (req, res, next) => {
 });
 
 router.post('/user', (req, res, next) => {
-  console.log(req.body.newName);
   var userId = req.session.user.id;
   Profile.update({_id: userId}, { $set: { name: req.body.newName }},(err, userData) => {
   res.redirect('/user');

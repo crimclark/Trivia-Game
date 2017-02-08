@@ -1,19 +1,14 @@
 <div class="container">
   <h1>Question #<span class="counter">1</span>:</h1>
-  <p>{{results.question}}</p>
+  <p>{{question}}</p>
 
-  {{#each answers}}
   <ul id="mc">
-   {{#if this.correct}}
-    <li class="mc-btn"><button class="correct" data-correct="true">{{this.answer}}</button></li>
-   {{else}}
-    <li class="mc-btn"><button class="incorrect" data-correct="false">{{this.answer}}</button></li>
-   {{/if}}
-  <ul>
+    {{#each answers}}
+    {{#if this.correct}}
+      <li class="mc-btn"><button class="correct" data-correct="true">{{this.answer}}</button></li>
+    {{else}}
+      <li class="mc-btn"><button class="incorrect" data-correct="false">{{this.answer}}</button></li>
+    {{/if}}
   {{/each}}
+  </ul>
 </div>
-
-{{!--    <li class="mc-btn"><button>Wrong Answer</button></li>
-   <li class="mc-btn"><button>Right Answer</button></li>
-   <li class="mc-btn"><button>Wrong Answer</button></li>
-   <li class="mc-btn"><button>Wrong Answer</button></li> --}}

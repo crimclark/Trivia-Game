@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Handlebars = require('handlebars');
+const getQuestion = require('../lib/getQuestion.js');
+const answerShuffle = require('../lib/answerShuffle.js')
 const Profile = require('../models/userProfiles');
 const GameRoom = require('../models/gameRooms');
 
@@ -9,9 +11,7 @@ router.get('/', (req, res, next) => {
     res.render('index', {title: 'Login Page'});
   } else {
     const user = JSON.stringify(req.session.user)
-    // res.send(`${user}`)
     res.render('new', {title: 'New Game'});
-    // res.render(create new game)
   }
 });
 
@@ -20,14 +20,18 @@ router.get('/new', (req, res, next) => {
 });
 
 router.get('/game/:id', (req, res, next) => {
-  console.log(req.params);
   var fullUrl = '/game/' + req.params.id;
   var gameRoom = new GameRoom({
     url: fullUrl,
     activeUsers: 1,
+    // *bug*
   });
   gameRoom.save();
-  res.render('game', {title: 'Question', num: "1"});
+  getQuestion(function(data, question) {
+    answerShuffle.answerShuffle(data, function(shuffleData) {
+      res.render('game', {question: question, answers: shuffleData});
+    })
+  })
 });
 
 router.get('/score', (req, res, next) => {
@@ -35,7 +39,10 @@ router.get('/score', (req, res, next) => {
 });
 
 router.get('/user', (req, res, next) => {
-  res.render('profile', {title: 'Player Profile'});
+  var userId = req.session.user.id;
+  Profile.findOne({_id: userId}, (err, userData) => {
+    res.render('profile', {title: 'Player Profile', info: userData});
+  });
 });
 
 router.get('/test', (req, res, next) => {

@@ -41,11 +41,24 @@ socket.on('correct click', function() {
 });
 
 $incorrect.on('click', function(event) {
-  $(this).addClass('clicked');
-  socket.emit('incorrect click');
+  // console.log(event.currentTarget)
+  console.log($(this).text());
+  var answerText = $(this).text();
+  // $(this).addClass('clicked');
+  // var clicked = event.currentTarget;
+  socket.emit('incorrect click', answerText);
 });
 
-socket.on('incorrect click', function() {
+socket.on('incorrect click', function(data) {
+  console.log(data);
+  var $li = $('li');
+  console.log($li);
+  $li.each( function(el) {
+    console.log(el);
+    console.log(el.child);
+    console.log(el.children[0]);
+    // if ($li.text() === )
+  })
   var $clicked = $('.clicked');
   $clicked.addClass('red');
 });

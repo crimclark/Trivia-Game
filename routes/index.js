@@ -73,6 +73,12 @@ router.get('/user', (req, res, next) => {
   });
 });
 
+router.get('/user.json', (req, res, next) => {
+  Profile.find({}, 'name avatar score.gamesWon score.gamesPlayed', function(err, userData) {
+    res.send(userData)
+  })
+})
+
 router.post('/user', (req, res, next) => {
   console.log(req.body.newName);
   var userId = req.session.user.id;

@@ -68,13 +68,6 @@ router.get('/user', (req, res, next) => {
   });
 });
 
-router.get('/user/edit', (req, res, next) => {
-  var userId = req.session.user.id;
-  Profile.findOne({_id: userId}, (err, userData) => {
-    res.render('Edit/profileEdit', {title: 'Player Profile', info: userData});
-  });
-});
-
 router.post('/user', (req, res, next) => {
   console.log(req.body.newName);
   var userId = req.session.user.id;

@@ -19,3 +19,7 @@ body {
   background-color: lightcoral;
   border-style: none;
 }
+
+.profileEdit {
+  display: none;
+}

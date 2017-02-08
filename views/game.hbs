@@ -5,9 +5,9 @@
   <ul id="mc">
     {{#each answers}}
     {{#if this.correct}}
-      <li class="mc-btn"><button class="correct" data-correct="true">{{this.answer}}</button></li>
+      <li class="mc-list"><button class="mc-btn correct" data-correct="true">{{this.answer}}</button></li>
     {{else}}
-      <li class="mc-btn"><button class="incorrect" data-correct="false">{{this.answer}}</button></li>
+      <li class="mc-list"><button class="mc-btn incorrect" data-correct="false">{{this.answer}}</button></li>
     {{/if}}
   {{/each}}
   </ul>

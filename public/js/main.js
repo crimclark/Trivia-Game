@@ -63,3 +63,21 @@ $startBtn.on('click', function(){
   console.log(randURL)
  $('form').attr('action', `${randURL}`);
 });
+
+//Profile Update rendering
+var $profEdit = $('.profileEdit');
+var $profEditFormBtn = $('.profileEdit>button');
+var $profEditLink = $('#profEditLink');
+var $profUserNameEdit = $('#profUserNameEdit');
+
+$profEditLink.on('click', function(evt){
+  $profEdit.css('display', 'inline');
+  $profUserNameEdit.css('display', 'none');
+});
+
+$profEditFormBtn.on('click', function(evt){
+  $profEdit.css('display', 'none');
+  $profUserNameEdit.css('display', 'inline');
+});
+
+

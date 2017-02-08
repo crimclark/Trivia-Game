@@ -17,6 +17,14 @@ function sockets(io) {
       socket.on('green click', function(){
         io.to(roomName).emit('green click');
       })
+
+      socket.on('correct click', function(){
+        io.to(roomName).emit('correct click');
+      })
+
+      socket.on('incorrect click', function(){
+        io.to(roomName).emit('incorrect click');
+      })
     })
   })
 }

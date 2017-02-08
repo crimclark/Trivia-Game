@@ -1,5 +1,7 @@
 var socket = io();
 var $startBtn = $('#startBtn');
+var $correct = $('.correct');
+var $incorrect = $('.incorrect');
 
 var room = window.location.pathname;
 
@@ -29,17 +31,24 @@ socket.on('red click', function() {
 
 //ANSWER CLICK PSEUDOCODE
 
-// answer.on('click', function(answerString) {
-//   socket.emit('answer click', answerString)
-// });
+$correct.on('click', function() {
+  socket.emit('correct click');
+});
 
-// socket.on('answer click', function(answer) {
-//  if (answer === 'correct') {
-//    turn answer green
-//  } else {
-//   turn answer red
-//  }
-// })
+socket.on('correct click', function() {
+  $correct.addClass('green');
+  // ajax => next question
+});
+
+$incorrect.on('click', function(event) {
+  $(this).addClass('clicked');
+  socket.emit('incorrect click');
+});
+
+socket.on('incorrect click', function() {
+  var $clicked = $('.clicked');
+  $clicked.addClass('red');
+});
 
 //ROOM URL PSEUDOCODE
 $startBtn.on('click', function(){

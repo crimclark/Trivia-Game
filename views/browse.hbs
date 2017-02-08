@@ -1,0 +1,15 @@
+<nav>
+  <a href="/">Home</a>
+  <a href="/user">Profile</a>
+  <a href="/browse">Browse Profiles</a>
+</nav>
+<div class="container">
+  <h1>{{ title }}</h1>
+  {{# each profile }}
+    <h6 style="display: inline-block;">Profile Name: <a href="user/{{ this._id }}">{{ this.name }}</a></h6>
+    <a href="user/{{ this._id }}" style="display: inline-block; text-indent: 1em;">
+    <img src="{{ this.avatar }}"></a>
+    <br>
+    <br>
+  {{/each}}
+</div>

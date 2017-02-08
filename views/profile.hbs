@@ -1,6 +1,16 @@
+<nav>
+  <a href="/">Home</a>
+  <a href="/user">Profile</a>
+  <a href="/browse">Browse Profiles</a>
+</nav>
 <div class="container">
    <h1>{{ title }}</h1>
-   <p>Username: {{ info.name }}</p>
+   <p><div id="profUserNameEdit">Username: {{ info.name }} <a href="#" id="profEditLink">Edit</a></div>
+      <form method="post" action="/user" class="profileEdit">
+        <input id="nameReplace" name="newName" class="profileEdit" placeholder="Replace profile name">
+        <button type="submit" class="profileEdit">Submit Change</button>
+      </form>
+   </p>
    <p>Games Won: {{ wins }}</p>
    <p>Games Played: {{ totalGames }}</p>
 </div>

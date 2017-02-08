@@ -19,6 +19,13 @@ router.get('/new', (req, res, next) => {
   res.render('new', {title: 'New Game'});
 });
 
+router.get('/question', (req, res, next) => {
+  getQuestion(function(data, question) {
+    answerShuffle.answerShuffle(data, function(shuffleData) {
+      res.send({question: question, answers: shuffleData});
+    })
+  })
+})
 
 router.get('/game/:id', (req, res, next) => {
   var fullUrl = '/game/' + req.params.id;
@@ -39,7 +46,7 @@ router.get('/game/:id', (req, res, next) => {
               question: question,
               answers: shuffleData
             },
-            });
+          });
           gameRoom.save();
           res.render('game', {question: question, answers: shuffleData});
           })
@@ -48,10 +55,8 @@ router.get('/game/:id', (req, res, next) => {
       else if(results) {
         console.log('game room exists in db')
         gameRooms.find({url: fullUrl}, function(err, results) {
-          var hope = results[0].firstQuestion[0]
-          console.log(hope)
-          console.log(hope.answers)
-         res.render('game', {question: hope.question, answers: hope.answers})
+          var formatted_results = results[0].firstQuestion[0]
+         res.render('game', {question: formatted_results.question, answers: formatted_results.answers})
         })
       }
     })
@@ -65,6 +70,27 @@ router.get('/user', (req, res, next) => {
   var userId = req.session.user.id;
   Profile.findOne({_id: userId}, (err, userData) => {
     res.render('profile', {title: 'Player Profile', info: userData});
+  });
+});
+
+router.post('/user', (req, res, next) => {
+  console.log(req.body.newName);
+  var userId = req.session.user.id;
+  Profile.update({_id: userId}, { $set: { name: req.body.newName }},(err, userData) => {
+  res.redirect('/user');
+  });
+});
+
+router.get('/user/:id', (req, res, next) => {
+  var userId = req.params.id;
+  Profile.findOne({_id: userId}, (err, userData) => {
+    res.render('pubProfData', {title: 'Player Profile', info: userData});
+  });
+});
+
+router.get('/browse', (req, res, next) => {
+  Profile.find({}, (err, allData) => {
+    res.render('browse',  { title: 'Browse Profiles', profile: allData });
   });
 });
 

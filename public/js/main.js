@@ -12,46 +12,91 @@ socket.on('connect', function() {
   socket.emit('room', room);
 });
 
-var greenBtn = $('#green');
-var redBtn = $('#red');
+// var greenBtn = $('#green');
+// var redBtn = $('#red');
 
-greenBtn.on('click', function(){
-  socket.emit('green click')
+// greenBtn.on('click', function(){
+//   socket.emit('green click')
+// });
+
+// redBtn.on('click', function(){
+//   socket.emit('red click')
+// });
+
+// socket.on('green click', function() {
+//   greenBtn.css('color', 'green');
+// });
+
+// socket.on('red click', function() {
+//   redBtn.css('color', 'red');
+// });
+
+function renderHtml(question) {
+  var $question = $('.question');
+  $question.text(question.question);
+  var html = '';
+  var answer = question.answers;
+  for (var i = 0; i < question.answers.length; i++) {
+    if (answer[i].correct) {
+      html += '<li class="mc-list"><button class="mc-btn correct" data-correct="true">' + answer[i].answer + '</button></li>';
+    } else {
+      html += '<li class="mc-list"><button class="mc-btn incorrect" data-correct="false">' + answer[i].answer + '</button></li>';
+    }
+  }
+  // console.log(html);
+  $('#mc').html(html);
+}
+
+function getQuestion(answer) {
+  $.get('/question', function(question) {
+    socket.emit('correct click', {question: question, answer: answer});
+  })
+}
+
+// CORRECT ANSWER CLICK
+$('body').on('click', '.correct', function(event) {
+  var answerText = $(this).text();
+  getQuestion(answerText);
 });
 
-redBtn.on('click', function(){
-  socket.emit('red click')
-});
-
-socket.on('green click', function() {
-  greenBtn.css('color', 'green');
-});
-
-socket.on('red click', function() {
-  redBtn.css('color', 'red');
-});
-
-//ANSWER CLICK PSEUDOCODE
-
-$correct.on('click', function() {
-  socket.emit('correct click');
-});
-
-socket.on('correct click', function() {
-  $correct.addClass('green');
+socket.on('correct click', function(data) {
+  // $correct.addClass('green');
+  console.log(data.answer)
+  $('li').each( function(el) {
+    if ($(this).text() === data.answer) {
+      $(this).children().addClass('green');
+    }
+  })
   // ajax => next question
+  setTimeout(function() {
+    renderHtml(data.question);
+  }, 1000);
 });
 
-$incorrect.on('click', function(event) {
-  $(this).addClass('clicked');
-  socket.emit('incorrect click');
+// WRONG ANSWER CLICK
+$('body').on('click', '.incorrect', function(event) {
+  // console.log($(this).text());
+  var answerText = $(this).text();
+  socket.emit('incorrect click', answerText);
 });
 
-socket.on('incorrect click', function() {
-  var $clicked = $('.clicked');
-  $clicked.addClass('red');
+socket.on('incorrect click', function(data) {
+  // console.log(data);
+  $('li').each( function(el) {
+    // console.log($(this));
+    // console.log($(this).text());
+    if ($(this).text() === data) {
+      $(this).children().addClass('red');
+    }
+  })
 });
 
+$('body').on('click', '.incorrect', function() {
+  console.log($('.red').length);
+  if ($('.red').length === 1) {
+    getQuestion();
+  }
+})
 //ROOM URL PSEUDOCODE
 
 $startBtn.on('click', function(){
@@ -60,4 +105,22 @@ $startBtn.on('click', function(){
   console.log(randURL)
  $('form').attr('action', `${randURL}`);
 });
+
+
+//Profile Update rendering
+var $profEdit = $('.profileEdit');
+var $profEditFormBtn = $('.profileEdit>button');
+var $profEditLink = $('#profEditLink');
+var $profUserNameEdit = $('#profUserNameEdit');
+
+$profEditLink.on('click', function(evt){
+  $profEdit.css('display', 'inline');
+  $profUserNameEdit.css('display', 'none');
+});
+
+$profEditFormBtn.on('click', function(evt){
+  $profEdit.css('display', 'none');
+  $profUserNameEdit.css('display', 'inline');
+});
+
 

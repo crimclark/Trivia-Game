@@ -43,6 +43,12 @@ router.get('/callback', (req, res, next) => {
   });
 });
 
+router.get('/logout', (req, res, next) => {
+  req.session.access_token = '';
+  req.session.user = '';
+  res.redirect('/');
+});
+
 
 module.exports = router;
 

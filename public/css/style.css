@@ -13,7 +13,9 @@ body {
 }
 .green {
   background-color: palegreen;
+  border-style: none;
 }
 .red {
   background-color: lightcoral;
+  border-style: none;
 }

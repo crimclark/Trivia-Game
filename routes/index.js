@@ -19,13 +19,24 @@ router.get('/new', (req, res, next) => {
   res.render('new', {title: 'New Game'});
 });
 
+var num = 1;
 router.get('/question', (req, res, next) => {
-  getQuestion(function(allData, question, data, n) {
-    answerShuffle.answerShuffle(data, function(shuffleData) {
-      res.send({question: allData[n].question, answers: shuffleData});
-    })
-  })
-})
+    if(num < 10){
+      gameRooms.find({url: req.query.gameUrl}, function(err, data){
+        var callback = function(exactData){
+          answerShuffle.answerShuffle(exactData, function(shuffleData) {
+            res.send({question: exactData.question, answers: shuffleData});
+            num++;
+          });
+        }
+        return callback(data[0].allQuestions[num]);
+      });
+    } else {
+        console.log('I am the else statement Justin');
+        res.render('new', {title: 'New Game'});
+        num = 1;
+      }
+});
 
 router.get('/game/:id', (req, res, next) => {
   var fullUrl = '/game/' + req.params.id;

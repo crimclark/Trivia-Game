@@ -2,66 +2,54 @@ var socket = io();
 var $startBtn = $('#startBtn');
 var $correct = $('.correct');
 var $incorrect = $('.incorrect');
-
 var room = window.location.pathname;
+var $profEdit = $('.profileEdit');
+var $profEditFormBtn = $('.profileEdit>button');
+var $profEditLink = $('#profEditLink');
+var $profUserNameEdit = $('#profUserNameEdit');
 
 socket.on('connect', function() {
   console.log('client connected');
   socket.emit('room', room);
 });
 
-// var greenBtn = $('#green');
-// var redBtn = $('#red');
-
-// greenBtn.on('click', function(){
-//   socket.emit('green click')
-// });
-
-// redBtn.on('click', function(){
-//   socket.emit('red click')
-// });
-
-// socket.on('green click', function() {
-//   greenBtn.css('color', 'green');
-// });
-
-// socket.on('red click', function() {
-//   redBtn.css('color', 'red');
-// });
-
 function renderHtml(question) {
-  var $question = $('.question');
-  $question.text(question.question);
-  var html = '';
   var answer = question.answers;
-  for (var i = 0; i < question.answers.length; i++) {
-    if (answer[i].correct) {
-      html += '<li class="mc-list"><button class="mc-btn correct" data-correct="true">' + answer[i].answer + '</button></li>';
-    } else {
-      html += '<li class="mc-list"><button class="mc-btn incorrect" data-correct="false">' + answer[i].answer + '</button></li>';
+  if(undefined === question.answers){
+    return;
+  } else {
+      var $question = $('.question');
+      $question.text(question.question);
+      var html = '';
+      for (var i = 0; i < 4; i++) {
+        if (answer[i].correct) {
+          html += '<li class="mc-list"><button class="mc-btn correct" data-correct="true">' + answer[i].answer + '</button></li>';
+        } else {
+            html += '<li class="mc-list"><button class="mc-btn incorrect" data-correct="false">' + answer[i].answer + '</button></li>';
+          }
+      }
+      $('#mc').html(html);
+      // Counter
+      var counter = $('.counter').text();
+      counter++;
+      $('.counter').text(counter)
     }
-  }
-
-  $('#mc').html(html);
-  // Counter
-  var counter = $('.counter').text();
-  counter++;
-  $('.counter').text(counter)
 }
 
 function getQuestion(answer) {
-  $.get('/question', function(question) {
+  $.get('/question?gameUrl=' + window.location.pathname, function(question) {
     socket.emit('correct click', {question: question, answer: answer});
   });
 }
+
 // CORRECT ANSWER CLICK
 $('body').on('click', '.correct', function(event) {
   var answerText = $(this).text();
-  getQuestion();
+  getQuestion(answerText);
 });
 
 socket.on('correct click', function(data) {
-  // $correct.addClass('green');
+  $correct.addClass('green');
   $('li').each( function(el) {
     if ($(this).text() === data.answer) {
       $(this).children().addClass('green');
@@ -76,7 +64,6 @@ socket.on('correct click', function(data) {
 // WRONG ANSWER CLICK
 $('body').on('click', '.incorrect', function(event) {
   var answerText = $(this).text();
-  console.log(answerText);
   socket.emit('incorrect click', answerText);
 });
 
@@ -89,10 +76,9 @@ socket.on('incorrect click', function(data) {
 });
 
 $('body').on('click', '.incorrect', function() {
-  console.log($('.red').length);
-  // if ($('.red').length === 1) {
-  //   getQuestion();
-  // }
+  if ($('.red').length === 1) {
+    getQuestion();
+  }
 });
 
 //ROOM URL PSEUDOCODE
@@ -103,10 +89,6 @@ $startBtn.on('click', function(){
 });
 
 //Profile Update rendering
-var $profEdit = $('.profileEdit');
-var $profEditFormBtn = $('.profileEdit>button');
-var $profEditLink = $('#profEditLink');
-var $profUserNameEdit = $('#profUserNameEdit');
 
 $profEditLink.on('click', function(evt){
   $profEdit.css('display', 'inline');

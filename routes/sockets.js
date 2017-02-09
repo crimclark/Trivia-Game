@@ -18,8 +18,6 @@ function sockets(io) {
       console.log('joined room ', roomName);
 
       socket.on('correct click', function(data){
-        // console.log('**score** ', data.score);
-        // console.log("**socket.id** ", socket.id);
         players.forEach( function(player) {
           for (var id in player) {
             if (player[id] === socket.id) {

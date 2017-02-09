@@ -39,6 +39,9 @@ nav a {
   background-color: lightcoral;
   border-style: none;
 }
+.scoreboard {
+  text-align: center;
+}
 .profileEdit {
   display: none;
 }

@@ -68,10 +68,6 @@ router.delete('/game/:id', (req, res, next) => {
   })
 })
 
-router.get('/fin_game/', (req, res, next) => {
-  res.render('index', {title: 'Login Page'});
-})
-
 router.get('/user', (req, res, next) => {
   var userId = req.session.user.id;
   Profile.findOne({_id: userId}, (err, userData) => {

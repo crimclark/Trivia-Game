@@ -27,13 +27,13 @@ function sockets(io) {
           }
         })
         io.to(roomName).emit('correct click', data);
-      })
+      });
 
       socket.on('incorrect click', function(data){
         io.to(roomName).emit('incorrect click', data);
-      })
-    })
-  })
+      });
+    });
+  });
 }
 
 module.exports = sockets;

@@ -19,45 +19,51 @@ router.get('/new', (req, res, next) => {
   res.render('new', {title: 'New Game'});
 });
 
+var num = 1;
 router.get('/question', (req, res, next) => {
-  getQuestion(function(data, question) {
-    answerShuffle.answerShuffle(data, function(shuffleData) {
-      res.send({question: question, answers: shuffleData});
-    })
-  })
-})
+    if(num < 10){
+      gameRooms.find({url: req.query.gameUrl}, function(err, data){
+        var callback = function(exactData){
+          answerShuffle.answerShuffle(exactData, function(shuffleData) {
+            res.send({question: exactData.question, answers: shuffleData});
+            num++;
+          });
+        }
+        return callback(data[0].allQuestions[num]);
+      });
+    } else {
+        console.log('I am the else statement Justin');
+        res.render('new', {title: 'New Game'});
+        num = 1;
+      }
+});
 
 router.get('/game/:id', (req, res, next) => {
   var fullUrl = '/game/' + req.params.id;
-  // test /game/XIttXxHc
   gameRooms.find({url: fullUrl }, function(err, results) {
     if (err) {
-      console.log(err)
-    }
-
-    if (results.length === 0) {
-      getQuestion(function(data, question) {
-        answerShuffle.answerShuffle(data, function(shuffleData) {
-          var gameRoom = new gameRooms({
-            url: fullUrl,
-            activeUsers: 1,
-            firstQuestion: {
-              question: question,
-              answers: shuffleData
-            },
+      console.log(err);
+    } else if (results.length === 0) {
+        getQuestion(function(allData, question, data) {
+          answerShuffle.answerShuffle(data, function(shuffleData) {
+            var gameRoom = new gameRooms({
+              url: fullUrl,
+              activeUsers: 1,
+              allQuestions: allData,
+            });
+            gameRoom.save();
+            res.render('game', {question: allData[0].question, answers: shuffleData});
           });
-          gameRoom.save();
-          res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl});
-          })
-        })
-      }
-      else if(results) {
-        gameRooms.find({url: fullUrl}, function(err, results) {
-          var formatted_results = results[0].firstQuestion[0]
-         res.render('game', {question: formatted_results.question, answers: formatted_results.answers})
-        })
-      }
-    })
+        });
+      } else if(results) {
+          gameRooms.find({url: fullUrl}, function(err, results) {
+            var formatted_results = results[0].allQuestions[0];
+            answerShuffle.answerShuffle(formatted_results, function(shuffleData) {
+              res.render('game', {question: formatted_results.question, answers: shuffleData});
+            });
+          });
+        }
+  });
 });
 
 router.delete('/game/:id', (req, res, next) => {
@@ -68,15 +74,6 @@ router.delete('/game/:id', (req, res, next) => {
     }
   })
 })
-
-
-router.get('/fin_game/', (req, res, next) => {
-  res.render('index', {title: 'Login Page'});
-})
-
-router.get('/score', (req, res, next) => {
-  res.render('score', {title: 'Score'});
-});
 
 router.get('/user', (req, res, next) => {
   var userId = req.session.user.id;

@@ -57,7 +57,7 @@ function getQuestion(answer) {
 // CORRECT ANSWER CLICK
 $('body').on('click', '.correct', function(event) {
   var answerText = $(this).text();
-  getQuestion(answerText);
+  getQuestion();
 });
 
 socket.on('correct click', function(data) {
@@ -76,6 +76,7 @@ socket.on('correct click', function(data) {
 // WRONG ANSWER CLICK
 $('body').on('click', '.incorrect', function(event) {
   var answerText = $(this).text();
+  console.log(answerText);
   socket.emit('incorrect click', answerText);
 });
 

@@ -20,9 +20,9 @@ router.get('/new', (req, res, next) => {
 });
 
 router.get('/question', (req, res, next) => {
-  getQuestion(function(data, question) {
+  getQuestion(function(allData, question, data, n) {
     answerShuffle.answerShuffle(data, function(shuffleData) {
-      res.send({question: question, answers: shuffleData});
+      res.send({question: allData[n].question, answers: shuffleData});
     })
   })
 })
@@ -32,31 +32,25 @@ router.get('/game/:id', (req, res, next) => {
   gameRooms.find({url: fullUrl }, function(err, results) {
     if (err) {
       console.log(err);
-    }
-
-    if (results.length === 0) {
-      console.log('no game room in db');
-      getQuestion(function(allData, question, data, n) {
-        // console.log(allData[n].question);
-        answerShuffle.answerShuffle(data, function(shuffleData) {
-          var gameRoom = new gameRooms({
-            url: fullUrl,
-            activeUsers: 1,
-            allQuestions: allData,
+    } else if (results.length === 0) {
+        getQuestion(function(allData, question, data, n) {
+          answerShuffle.answerShuffle(data, function(shuffleData) {
+            var gameRoom = new gameRooms({
+              url: fullUrl,
+              activeUsers: 1,
+              allQuestions: allData,
+            });
+            gameRoom.save();
+            res.render('game', {question: allData[n].question, answers: shuffleData});
           });
-          gameRoom.save();
-          res.render('game', {question: allData[n].question, answers: shuffleData});
-        });
-      }, 0);
-    }
-      else if(results) {
-        console.log('game room exists in db')
-        gameRooms.find({url: fullUrl}, function(err, results) {
-          var formatted_results = results[0].firstQuestion[0];
-         res.render('game', {question: formatted_results.question, answers: formatted_results.answers});
-        })
-      }
-    })
+        }, 0);
+      } else if(results) {
+          gameRooms.find({url: fullUrl}, function(err, results) {
+            var formatted_results = results[0].firstQuestion[0];
+           res.render('game', {question: formatted_results.question, answers: formatted_results.answers});
+          })
+        }
+  });
 });
 
 router.get('/score', (req, res, next) => {
@@ -71,7 +65,6 @@ router.get('/user', (req, res, next) => {
 });
 
 router.post('/user', (req, res, next) => {
-  console.log(req.body.newName);
   var userId = req.session.user.id;
   Profile.update({_id: userId}, { $set: { name: req.body.newName }},(err, userData) => {
   res.redirect('/user');

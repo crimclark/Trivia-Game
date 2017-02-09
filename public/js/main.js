@@ -10,8 +10,34 @@ var $profUserNameEdit = $('#profUserNameEdit');
 
 socket.on('connect', function() {
   console.log('client connected');
-  socket.emit('room', room);
+  var player = {
+    id: socket.id,
+    score: 0,
+    room: room
+  }
+  socket.emit('room', {room: room, player: player});
 });
+
+var playerScore = 0;
+
+var player = {
+  id: socket.id,
+  score: 0
+}
+
+var counter = $('.counter').text()
+function addToCounter() {
+  counter++
+  $('.counter').text(counter);
+  if (counter === 11) {
+    html = '<div class="container scoreboard"><h1>GAME OVER</h1><h3>*USER* WINS</h3><h5>User1 Score: ##</h5><h5>User2 Score: ##</h5></div>';
+    $('.container').html(html);
+    $.ajax({
+      url: $('#gameUrl').text(),
+      type: 'delete',
+    })
+  }
+}
 
 function renderHtml(question) {
   var answer = question.answers;
@@ -40,16 +66,28 @@ function getQuestion(answer) {
   $.get('/question?gameUrl=' + window.location.pathname, function(question) {
     socket.emit('correct click', {question: question, answer: answer});
   });
+  }
+  $('#mc').html(html);
+  // Counter
+  addToCounter();
+}
+
+function getQuestion(answer) {
+  $.get('/question', function(question) {
+    socket.emit('correct click', {question: question, answer: answer, score: playerScore});
+    console.log(playerScore);
+    console.log(socket.id);
+  })
 }
 
 // CORRECT ANSWER CLICK
 $('body').on('click', '.correct', function(event) {
   var answerText = $(this).text();
+  playerScore ++;
   getQuestion(answerText);
 });
 
 socket.on('correct click', function(data) {
-  $correct.addClass('green');
   $('li').each( function(el) {
     if ($(this).text() === data.answer) {
       $(this).children().addClass('green');

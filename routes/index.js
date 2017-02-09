@@ -44,7 +44,7 @@ router.get('/game/:id', (req, res, next) => {
     if (err) {
       console.log(err);
     } else if (results.length === 0) {
-        getQuestion(function(allData, question, data, n) {
+        getQuestion(function(allData, question, data) {
           answerShuffle.answerShuffle(data, function(shuffleData) {
             var gameRoom = new gameRooms({
               url: fullUrl,
@@ -52,9 +52,9 @@ router.get('/game/:id', (req, res, next) => {
               allQuestions: allData,
             });
             gameRoom.save();
-            res.render('game', {question: allData[n].question, answers: shuffleData});
+            res.render('game', {question: allData[0].question, answers: shuffleData});
           });
-        }, 0);
+        });
       } else if(results) {
           gameRooms.find({url: fullUrl}, function(err, results) {
             var formatted_results = results[0].firstQuestion[0];
@@ -64,9 +64,14 @@ router.get('/game/:id', (req, res, next) => {
   });
 });
 
-router.get('/score', (req, res, next) => {
-  res.render('score', {title: 'Score'});
-});
+router.delete('/game/:id', (req, res, next) => {
+  var fullUrl = '/game/' + req.params.id;
+  gameRooms.findOneAndRemove({url: fullUrl}, function(err) {
+    if (err) {
+      console.log(err)
+    }
+  })
+})
 
 router.get('/user', (req, res, next) => {
   var userId = req.session.user.id;
@@ -74,6 +79,12 @@ router.get('/user', (req, res, next) => {
     res.render('profile', {title: 'Player Profile', info: userData});
   });
 });
+
+router.get('/user.json', (req, res, next) => {
+  Profile.find({}, 'name avatar score.gamesWon score.gamesPlayed', function(err, userData) {
+    res.send(userData)
+  })
+})
 
 router.post('/user', (req, res, next) => {
   var userId = req.session.user.id;

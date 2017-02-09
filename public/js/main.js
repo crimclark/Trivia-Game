@@ -7,8 +7,20 @@ var room = window.location.pathname;
 
 socket.on('connect', function() {
   console.log('client connected');
-  socket.emit('room', room);
+  var player = {
+    id: socket.id,
+    score: 0,
+    room: room
+  }
+  socket.emit('room', {room: room, player: player});
 });
+
+
+var playerScore = 0;
+var player = {
+  id: socket.id,
+  score: 0
+}
 
 function renderHtml(question) {
   var $question = $('.question');
@@ -22,7 +34,6 @@ function renderHtml(question) {
       html += '<li class="mc-list"><button class="mc-btn incorrect" data-correct="false">' + answer[i].answer + '</button></li>';
     }
   }
-  // console.log(html);
   $('#mc').html(html);
   // Counter
   var counter = $('.counter').text()
@@ -34,12 +45,17 @@ function renderHtml(question) {
       url: $('#gameUrl').text(),
       type: 'delete',
     })
+    $.get('/score', function(res) {
+      console.log(res);
+    })
   }
 }
 
 function getQuestion(answer) {
   $.get('/question', function(question) {
-    socket.emit('correct click', {question: question, answer: answer});
+    socket.emit('correct click', {question: question, answer: answer, score: playerScore});
+    console.log(playerScore);
+    console.log(socket.id);
   })
 }
 
@@ -55,8 +71,7 @@ socket.on('correct click', function(data) {
     if ($(this).text() === data.answer) {
       $(this).children().addClass('green');
     }
-  })
-  // ajax => next question
+  });
   setTimeout(function() {
     renderHtml(data.question);
   }, 1000);
@@ -72,8 +87,6 @@ socket.on('correct click', function(data) {
 socket.on('incorrect click', function(data) {
   // console.log(data);
   $('li').each( function(el) {
-    // console.log($(this));
-    // console.log($(this).text());
     if ($(this).text() === data) {
       $(this).children().addClass('red');
     }

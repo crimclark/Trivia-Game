@@ -7,27 +7,20 @@ var room = window.location.pathname;
 
 socket.on('connect', function() {
   console.log('client connected');
-  socket.emit('room', room);
+  var player = {
+    id: socket.id,
+    score: 0,
+    room: room
+  }
+  socket.emit('room', {room: room, player: player});
 });
 
-// var greenBtn = $('#green');
-// var redBtn = $('#red');
+var playerScore = 0;
 
-// greenBtn.on('click', function(){
-//   socket.emit('green click')
-// });
-
-// redBtn.on('click', function(){
-//   socket.emit('red click')
-// });
-
-// socket.on('green click', function() {
-//   greenBtn.css('color', 'green');
-// });
-
-// socket.on('red click', function() {
-//   redBtn.css('color', 'red');
-// });
+var player = {
+  id: socket.id,
+  score: 0
+}
 
 function renderHtml(question) {
   var $question = $('.question');
@@ -46,17 +39,26 @@ function renderHtml(question) {
   var counter = $('.counter').text()
   counter++
   $('.counter').text(counter)
+  if (counter === 10) {
+    $.get('/score', function(res) {
+      console.log(res);
+
+    })
+  }
 }
 
 function getQuestion(answer) {
   $.get('/question', function(question) {
-    socket.emit('correct click', {question: question, answer: answer});
+    socket.emit('correct click', {question: question, answer: answer, score: playerScore});
+    console.log(playerScore);
+    console.log(socket.id);
   })
 }
 
 // CORRECT ANSWER CLICK
 $('body').on('click', '.correct', function(event) {
   var answerText = $(this).text();
+  playerScore ++;
   getQuestion(answerText);
 });
 
@@ -90,7 +92,7 @@ socket.on('incorrect click', function(data) {
 });
 
 $('body').on('click', '.incorrect', function() {
-  console.log($('.red').length);
+  // console.log($('.red').length);
   if ($('.red').length === 1) {
     getQuestion();
   }

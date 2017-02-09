@@ -10,26 +10,14 @@ router.get('/', (req, res, next) => {
   if (!req.session.user) {
     res.render('index', {title: 'Login Page'});
   } else {
-    const user = JSON.stringify(req.session.user);
-    res.render('new', {title: 'New Game'});
-  }
+      const user = JSON.stringify(req.session.user);
+      res.render('new', {title: 'New Game'});
+    }
 });
 
-router.get('/new', (req, res, next) => {
-  res.render('new', {title: 'New Game'});
-});
-
-router.get('/question', (req, res, next) => {
-  getQuestion(function(data, question) {
-    answerShuffle.answerShuffle(data, function(shuffleData) {
-      res.send({question: question, answers: shuffleData});
-    });
-  });
-});
-
+// Create
 router.get('/game/:id', (req, res, next) => {
   var fullUrl = '/game/' + req.params.id;
-  // test /game/XIttXxHc
   gameRooms.find({url: fullUrl }, function(err, results) {
     if (err) {
       console.log(err);
@@ -59,6 +47,10 @@ router.get('/game/:id', (req, res, next) => {
     });
 });
 
+// Read
+router.get('/new', (req, res, next) => {
+  res.render('new', {title: 'New Game'});
+});
 
 router.get('/join', (req, res, next) => {
   gameRooms.find({activeUsers: 1}, (err, allRooms) => {
@@ -70,12 +62,11 @@ router.get('/join', (req, res, next) => {
   });
 });
 
-router.delete('/game/:id', (req, res, next) => {
-  var fullUrl = '/game/' + req.params.id;
-  gameRooms.findOneAndRemove({url: fullUrl}, function(err) {
-    if (err) {
-      console.log(err);
-    }
+router.get('/question', (req, res, next) => {
+  getQuestion(function(data, question) {
+    answerShuffle.answerShuffle(data, function(shuffleData) {
+      res.send({question: question, answers: shuffleData});
+    });
   });
 });
 
@@ -86,16 +77,9 @@ router.get('/user', (req, res, next) => {
   });
 });
 
-router.get('/user.json', (req, res, next) => {
-  Profile.find({}, 'name avatar score.gamesWon score.gamesPlayed', function(err, userData) {
-    res.send(userData);
-  });
-});
-
-router.post('/user', (req, res, next) => {
-  var userId = req.session.user.id;
-  Profile.update({_id: userId}, { $set: { name: req.body.newName }},(err, userData) => {
-  res.redirect('/user');
+router.get('/browse', (req, res, next) => {
+  Profile.find({}, (err, allData) => {
+    res.render('browse',  { title: 'Browse Profiles', profile: allData });
   });
 });
 
@@ -106,14 +90,31 @@ router.get('/user/:id', (req, res, next) => {
   });
 });
 
-router.get('/browse', (req, res, next) => {
-  Profile.find({}, (err, allData) => {
-    res.render('browse',  { title: 'Browse Profiles', profile: allData });
+router.get('/user.json', (req, res, next) => {
+  Profile.find({}, 'name avatar score.gamesWon score.gamesPlayed', function(err, userData) {
+    res.send(userData);
   });
 });
 
-router.get('/test', (req, res, next) => {
-  res.render('test');
+// Update
+router.put('/user', (req, res, next) => {
+  console.log('I am the PUT Justin!!!!! ' + req.body.newName);
+  console.log(req.body);
+  var userId = req.session.user.id;
+  console.log(userId);
+  Profile.update({_id: userId}, { $set: { name: req.body.newName }},(err, userData) => {
+  res.redirect('/user');
+  });
+});
+
+// Delete
+router.delete('/game/:id', (req, res, next) => {
+  var fullUrl = '/game/' + req.params.id;
+  gameRooms.findOneAndRemove({url: fullUrl}, function(err) {
+    if (err) {
+      console.log(err);
+    }
+  });
 });
 
 module.exports = router

@@ -36,7 +36,6 @@ router.get('/game/:id', (req, res, next) => {
     }
 
     if (results.length === 0) {
-      console.log('no game room in db');
       getQuestion(function(data, question) {
         answerShuffle.answerShuffle(data, function(shuffleData) {
           var gameRoom = new gameRooms({
@@ -48,12 +47,11 @@ router.get('/game/:id', (req, res, next) => {
             },
           });
           gameRoom.save();
-          res.render('game', {question: question, answers: shuffleData});
+          res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl});
           })
         })
       }
       else if(results) {
-        console.log('game room exists in db')
         gameRooms.find({url: fullUrl}, function(err, results) {
           var formatted_results = results[0].firstQuestion[0]
          res.render('game', {question: formatted_results.question, answers: formatted_results.answers})
@@ -61,6 +59,20 @@ router.get('/game/:id', (req, res, next) => {
       }
     })
 });
+
+router.delete('/game/:id', (req, res, next) => {
+  var fullUrl = '/game/' + req.params.id;
+  gameRooms.findOneAndRemove({url: fullUrl}, function(err) {
+    if (err) {
+      console.log(err)
+    }
+  })
+})
+
+
+router.get('/fin_game/', (req, res, next) => {
+  res.render('index', {title: 'Login Page'});
+})
 
 router.get('/score', (req, res, next) => {
   res.render('score', {title: 'Score'});
@@ -73,8 +85,13 @@ router.get('/user', (req, res, next) => {
   });
 });
 
+router.get('/user.json', (req, res, next) => {
+  Profile.find({}, 'name avatar score.gamesWon score.gamesPlayed', function(err, userData) {
+    res.send(userData)
+  })
+})
+
 router.post('/user', (req, res, next) => {
-  console.log(req.body.newName);
   var userId = req.session.user.id;
   Profile.update({_id: userId}, { $set: { name: req.body.newName }},(err, userData) => {
   res.redirect('/user');

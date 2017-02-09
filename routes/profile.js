@@ -30,7 +30,6 @@ router.get('/me', (req, res, next) => {
       }
 
       if (!results) {
-        console.log('no user in db')
         var player = new userProfile({
           _id: req.session.user.id,
           name: req.session.user.name.givenName,

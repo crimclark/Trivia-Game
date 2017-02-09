@@ -41,10 +41,14 @@ function renderHtml(question) {
   var counter = $('.counter').text()
   counter++
   $('.counter').text(counter)
-  if (counter === 10) {
+
+  if(counter === 10 ) {
+    $.ajax({
+      url: $('#gameUrl').text(),
+      type: 'delete',
+    })
     $.get('/score', function(res) {
       console.log(res);
-
 
     })
   }
@@ -78,7 +82,6 @@ $('body').on('click', '.correct', function(event) {
 });
 
 socket.on('correct click', function(data) {
-  console.log(data.answer)
   $('li').each( function(el) {
     if ($(this).text() === data.answer) {
       $(this).children().addClass('green');
@@ -109,7 +112,6 @@ socket.on('incorrect click', function(data) {
 });
 
 $('body').on('click', '.incorrect', function() {
-  // console.log($('.red').length);
   if ($('.red').length === 1) {
     getQuestion();
   }
@@ -119,7 +121,6 @@ $('body').on('click', '.incorrect', function() {
 $startBtn.on('click', function(){
   var randURL = '/game/'
   randURL += randWord()
-  console.log(randURL)
  $('form').attr('action', `${randURL}`);
 });
 

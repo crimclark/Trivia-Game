@@ -17,9 +17,9 @@ function sockets(io) {
 
 
       socket.on('correct click', function(data){
-        // console.log('**score** ', data.score);
+
         var currentPlayer;
-        // console.log("**socket.id** ", socket.id);
+
         players.forEach( function(player) {
           for (var id in player) {
             if (player[id] === socket.id) {

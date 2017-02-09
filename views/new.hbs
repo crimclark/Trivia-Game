@@ -1,11 +1,11 @@
 <nav>
-  <a class="home" href="/">Home</a>
-  <a class="menu" href="/user">Profile</a>
-  <a class="menu" href="/browse">Browse</a>
+  <a class="home" href="/"><img class="icon" src="http://i.imgur.com/PgxrRFA.png?1" alt="home"></a>
+  <a class="menu" href="/user"><img class="avatar" src="https://lh5.googleusercontent.com/-308mrmWziQI/AAAAAAAAAAI/AAAAAAAAADw/9o3EliAGByU/photo.jpg?sz=50" alt="avatar"></a>
+  <a class="menu" href="/browse"><img class="icon" src="http://i.imgur.com/KAg1Yyz.png?1" alt="browse"></a>
 </nav>
 <div class="container">
   <h1>{{ title }}</h1>
-{{!--   <select class="">
+  <select class="category">
     <option value="Option 1">Select a Category:</option>
     <option value="Option 2">General Knowledge</option>
     <option value="Option 3">Entertainment: Comics</option>
@@ -15,10 +15,10 @@
     <option value="Option 3">History</option>
     <option value="Option 3">Science: Computers</option>
     <option value="Option 3">Sports</option>
-  </select> --}}
+  </select>
 
   <form method="GET">
-    <button class="button" id='startBtn'>Create Game</button>
+    <button class="button" id="startBtn">Create Game</button>
   </form>
   <form method="GET" action="/join">
     <button class="button" id='joinBtn'>Join Game</button>

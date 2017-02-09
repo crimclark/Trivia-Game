@@ -29,34 +29,31 @@ router.get('/question', (req, res, next) => {
 
 router.get('/game/:id', (req, res, next) => {
   var fullUrl = '/game/' + req.params.id;
-  // test /game/XIttXxHc
   gameRooms.find({url: fullUrl }, function(err, results) {
     if (err) {
-      console.log(err)
+      console.log(err);
     }
 
     if (results.length === 0) {
       console.log('no game room in db');
-      getQuestion(function(data, question) {
+      getQuestion(function(allData, question, data, n) {
+        // console.log(allData[n].question);
         answerShuffle.answerShuffle(data, function(shuffleData) {
           var gameRoom = new gameRooms({
             url: fullUrl,
             activeUsers: 1,
-            firstQuestion: {
-              question: question,
-              answers: shuffleData
-            },
+            allQuestions: allData,
           });
           gameRoom.save();
-          res.render('game', {question: question, answers: shuffleData});
-          })
-        })
-      }
+          res.render('game', {question: allData[n].question, answers: shuffleData});
+        });
+      }, 0);
+    }
       else if(results) {
         console.log('game room exists in db')
         gameRooms.find({url: fullUrl}, function(err, results) {
-          var formatted_results = results[0].firstQuestion[0]
-         res.render('game', {question: formatted_results.question, answers: formatted_results.answers})
+          var formatted_results = results[0].firstQuestion[0];
+         res.render('game', {question: formatted_results.question, answers: formatted_results.answers});
         })
       }
     })

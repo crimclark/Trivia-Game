@@ -41,20 +41,19 @@ function renderHtml(question) {
       html += '<li class="mc-list"><button class="mc-btn incorrect" data-correct="false">' + answer[i].answer + '</button></li>';
     }
   }
-  // console.log(html);
+
   $('#mc').html(html);
   // Counter
-  var counter = $('.counter').text()
-  counter++
+  var counter = $('.counter').text();
+  counter++;
   $('.counter').text(counter)
 }
 
 function getQuestion(answer) {
   $.get('/question', function(question) {
     socket.emit('correct click', {question: question, answer: answer});
-  })
+  });
 }
-
 // CORRECT ANSWER CLICK
 $('body').on('click', '.correct', function(event) {
   var answerText = $(this).text();
@@ -63,12 +62,11 @@ $('body').on('click', '.correct', function(event) {
 
 socket.on('correct click', function(data) {
   // $correct.addClass('green');
-  console.log(data.answer)
   $('li').each( function(el) {
     if ($(this).text() === data.answer) {
       $(this).children().addClass('green');
     }
-  })
+  });
   // ajax => next question
   setTimeout(function() {
     renderHtml(data.question);
@@ -77,33 +75,29 @@ socket.on('correct click', function(data) {
 
 // WRONG ANSWER CLICK
 $('body').on('click', '.incorrect', function(event) {
-  // console.log($(this).text());
   var answerText = $(this).text();
   socket.emit('incorrect click', answerText);
 });
 
 socket.on('incorrect click', function(data) {
-  // console.log(data);
   $('li').each( function(el) {
-    // console.log($(this));
-    // console.log($(this).text());
     if ($(this).text() === data) {
       $(this).children().addClass('red');
     }
-  })
+  });
 });
 
 $('body').on('click', '.incorrect', function() {
   console.log($('.red').length);
-  if ($('.red').length === 1) {
-    getQuestion();
-  }
-})
+  // if ($('.red').length === 1) {
+  //   getQuestion();
+  // }
+});
+
 //ROOM URL PSEUDOCODE
 $startBtn.on('click', function(){
   var randURL = '/game/'
-  randURL += randWord()
-  console.log(randURL)
+  randURL += randWord();
  $('form').attr('action', `${randURL}`);
 });
 

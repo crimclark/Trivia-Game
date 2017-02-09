@@ -10,7 +10,6 @@ const client_secret = process.env.GOOGLE_CLIENT_SECRET;
 router.get('/login', (req, res, next) => {
   if(!process.env.prod) {
     var redirect_uri = 'http://127.0.0.1:3000/auth/callback';
-    console.log('running locally')
   } else {
     var redirect_uri = 'https://arcane-wave-24103.herokuapp.com/auth/callback'
   }
@@ -23,7 +22,6 @@ router.get('/login', (req, res, next) => {
 router.get('/callback', (req, res, next) => {
   if(!process.env.prod) {
     var redirect_uri = 'http://127.0.0.1:3000/auth/callback';
-    console.log('running locally')
   } else {
     var redirect_uri = 'https://arcane-wave-24103.herokuapp.com/auth/callback'
   }

@@ -8,27 +8,35 @@ var room = window.location.pathname;
 
 socket.on('connect', function() {
   console.log('client connected');
-  socket.emit('room', room);
+  var player = {
+    id: socket.id,
+    score: 0,
+    room: room
+  }
+  socket.emit('room', {room: room, player: player});
 });
 
-// var greenBtn = $('#green');
-// var redBtn = $('#red');
+var playerScore = 0;
 
-// greenBtn.on('click', function(){
-//   socket.emit('green click')
-// });
+var player = {
+  id: socket.id,
+  score: 0
+}
 
-// redBtn.on('click', function(){
-//   socket.emit('red click')
-// });
+var counter = $('.counter').text()
+function addToCounter() {
+  counter++
+  $('.counter').text(counter);
 
-// socket.on('green click', function() {
-//   greenBtn.css('color', 'green');
-// });
-
-// socket.on('red click', function() {
-//   redBtn.css('color', 'red');
-// });
+  if (counter === 11) {
+    html = '<div class="container scoreboard"><h1>GAME OVER</h1><h3>*USER* WINS</h3><h5>User1 Score: ##</h5><h5>User2 Score: ##</h5></div>';
+    $('.container').html(html);
+    $.ajax({
+      url: $('#gameUrl').text(),
+      type: 'delete',
+    })
+  }
+}
 
 function renderHtml(question) {
   var $question = $('.question');
@@ -42,29 +50,27 @@ function renderHtml(question) {
       html += '<li class="mc-list"><button class="mc-btn incorrect" data-correct="false">' + answer[i].answer + '</button></li>';
     }
   }
-  // console.log(html);
   $('#mc').html(html);
   // Counter
-  var counter = $('.counter').text()
-  counter++
-  $('.counter').text(counter)
+  addToCounter();
 }
 
 function getQuestion(answer) {
   $.get('/question', function(question) {
-    socket.emit('correct click', {question: question, answer: answer});
+    socket.emit('correct click', {question: question, answer: answer, score: playerScore});
+    console.log(playerScore);
+    console.log(socket.id);
   })
 }
 
 // CORRECT ANSWER CLICK
 $('body').on('click', '.correct', function(event) {
   var answerText = $(this).text();
+  playerScore ++;
   getQuestion(answerText);
 });
 
 socket.on('correct click', function(data) {
-  // $correct.addClass('green');
-  console.log(data.answer)
   $('li').each( function(el) {
     if ($(this).text() === data.answer) {
       $(this).children().addClass('green');
@@ -86,8 +92,6 @@ $('body').on('click', '.incorrect', function(event) {
 socket.on('incorrect click', function(data) {
   // console.log(data);
   $('li').each( function(el) {
-    // console.log($(this));
-    // console.log($(this).text());
     if ($(this).text() === data) {
       $(this).children().addClass('red');
     }
@@ -95,7 +99,6 @@ socket.on('incorrect click', function(data) {
 });
 
 $('body').on('click', '.incorrect', function() {
-  console.log($('.red').length);
   if ($('.red').length === 1) {
     getQuestion();
   }
@@ -104,7 +107,6 @@ $('body').on('click', '.incorrect', function() {
 $startBtn.on('click', function(){
   var randURL = '/game/'
   randURL += randWord()
-  console.log(randURL)
  $('form').attr('action', `${randURL}`);
 });
 

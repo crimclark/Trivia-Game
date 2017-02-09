@@ -10,25 +10,6 @@ socket.on('connect', function() {
   socket.emit('room', room);
 });
 
-// var greenBtn = $('#green');
-// var redBtn = $('#red');
-
-// greenBtn.on('click', function(){
-//   socket.emit('green click')
-// });
-
-// redBtn.on('click', function(){
-//   socket.emit('red click')
-// });
-
-// socket.on('green click', function() {
-//   greenBtn.css('color', 'green');
-// });
-
-// socket.on('red click', function() {
-//   redBtn.css('color', 'red');
-// });
-
 function renderHtml(question) {
   var $question = $('.question');
   $question.text(question.question);
@@ -63,14 +44,14 @@ function getQuestion(answer) {
 }
 
 // CORRECT ANSWER CLICK
-$('body').on('click', '.correct', function(event) {
-  var answerText = $(this).text();
-  getQuestion(answerText);
-});
+// $('body').on('click', '.correct', function(event) {
+//   var answerText = $(this).text();
+//   getQuestion(answerText);
+// });
 
 socket.on('correct click', function(data) {
   // $correct.addClass('green');
-  $('li').each( function(el) {
+  $('li').each( function(i) {
     if ($(this).text() === data.answer) {
       $(this).children().addClass('green');
     }
@@ -82,11 +63,11 @@ socket.on('correct click', function(data) {
 });
 
 // WRONG ANSWER CLICK
-$('body').on('click', '.incorrect', function(event) {
-  // console.log($(this).text());
-  var answerText = $(this).text();
-  socket.emit('incorrect click', answerText);
-});
+// $('body').on('click', '.incorrect', function(event) {
+//   // console.log($(this).text());
+//   var answerText = $(this).text();
+//   socket.emit('incorrect click', answerText);
+// });
 
 socket.on('incorrect click', function(data) {
   // console.log(data);
@@ -99,11 +80,13 @@ socket.on('incorrect click', function(data) {
   })
 });
 
-$('body').on('click', '.incorrect', function() {
-  if ($('.red').length === 1) {
-    getQuestion();
-  }
-})
+// $('body').on('click', '.incorrect', function() {
+//   if ($('.red').length === 1) {
+//     getQuestion();
+//   }
+// })
+
+
 //ROOM URL PSEUDOCODE
 $startBtn.on('click', function(){
   var randURL = '/game/'
@@ -126,5 +109,46 @@ $profEditFormBtn.on('click', function(evt){
   $profEdit.css('display', 'none');
   $profUserNameEdit.css('display', 'inline');
 });
+
+// Prevent Double Click
+
+// CORRECT ANSWER CLICK
+// $('body').on('click', '.correct', function(event) {
+//   var answerText = $(this).text();
+//   getQuestion(answerText);
+// });
+
+// WRONG ANSWER CLICK
+// $('body').on('click', '.incorrect', function(event) {
+//   // console.log($(this).text());
+//   var answerText = $(this).text();
+//   socket.emit('incorrect click', answerText);
+// });
+
+// $('body').on('click', '.incorrect', function() {
+//   if ($('.red').length === 1) {
+//     getQuestion();
+//   }
+// })
+
+$('body').one('click', function(evt) {
+  console.log(evt.target.classList)
+  if (evt.target.classList.contains('correct')) {
+    $(evt.target).addClass('green');
+    console.log('correct button')
+    var answerText = $(this).text()
+    getQuestion(answerText)
+  } else if(evt.target.classList.contains('incorrect')) {
+      var answerText = $(this).text();
+      $(evt.target).addClass('red');
+      socket.emit('incorrect click', answerText)
+      if ($('.red').length === 1) {
+        getQuestion();
+      }
+  }
+})
+
+
+
 
 

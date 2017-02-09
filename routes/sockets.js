@@ -17,7 +17,7 @@ function sockets(io) {
 
       console.log('joined room ', roomName);
 
-      socket.on('correct click', function(id, data){
+      socket.on('correct click', function(data){
         // console.log('**score** ', data.score);
         var currentPlayer;
         // console.log("**socket.id** ", socket.id);
@@ -36,7 +36,7 @@ function sockets(io) {
         console.log('currentplayer id: ', currentPlayer.id);
         console.log('id is ', id);
         console.log('current player is ', currentPlayer)
-        socket.broadcast.to(id).emit('get score', currentPlayer.score)
+        socket.broadcast.to(socket.id).emit('get score', currentPlayer.score)
       })
 
       socket.on('incorrect click', function(data){

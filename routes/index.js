@@ -52,11 +52,20 @@ router.get('/game/:id', (req, res, next) => {
       }
       else if(results) {
         gameRooms.find({url: fullUrl}, function(err, results) {
-          var formatted_results = results[0].firstQuestion[0]
+          var formatted_results = results[0].firstQuestion[0];
          res.render('game', {question: formatted_results.question, answers: formatted_results.answers})
         })
       }
     })
+});
+
+
+router.get('/join', (req, res, next) => {
+  gameRooms.find({}, (err, allRooms) => {
+    var rand = Math.floor(Math.random() * allRooms.length);
+    var joinUrl = allRooms[rand].url;
+    res.redirect(joinUrl);
+  });
 });
 
 router.delete('/game/:id', (req, res, next) => {

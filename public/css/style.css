@@ -1,14 +1,50 @@
-/**/
 body {
-  margin-top: 2%;
+  margin-top: 4%;
+  font-size: 18px;
+}
+.container {
+  margin-top: 8em;
+}
+nav {
+  /*border-bottom: .8px solid #E0E0E0;*/
+  background-color: #E0F2F1;
+  height: 2.4em;
+  top: 0;
+  position: fixed;
+  width: 100%;
+}
+nav a {
+  font-family: Helvetica;
+  font-weight: 300;
+  text-decoration: none;
+  color: gray;
+  margin: .4em 0;
+}
+.home {
+  float: left;
+  padding-left: 1em;
+}
+.menu {
+  float: right;
+  /*margin-left: 2%;*/
+  padding-left: 1em;
+  padding-right: .4em;
+}
+img.avatar {
+  width: 1.7em;
+  height: 1.7em;
+  margin-right: .6em;
+  /*position: relative;*/
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+}
+img.icon {
+  display: inline;
+  width: 1.7em;
+  height: 1.7em;
 }
 .mc-list {
-/*  display: block;
-  width: 50%;
-  min-width: 200px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;*/
   list-style: none;
 }
 .green {
@@ -19,7 +55,9 @@ body {
   background-color: lightcoral;
   border-style: none;
 }
-
+.scoreboard {
+  text-align: center;
+}
 .profileEdit {
   display: none;
 }

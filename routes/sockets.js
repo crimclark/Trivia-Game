@@ -1,12 +1,15 @@
+var players = [];
+
 function sockets(io) {
   io.on('connection', socket => {
 
     console.log('a user connected');
 
-    socket.on('room', function(roomName) {
-      socket.join(roomName);
+    socket.on('room', function(data) {
+      // console.log("**data** ", data);
+      var roomName = data.room;
 
-      console.log('joined room ' + roomName);
+      socket.join(roomName);
 
       // socket.on('red click', function() {
       //   io.to(roomName).emit('red click');
@@ -16,8 +19,21 @@ function sockets(io) {
       //   io.to(roomName).emit('green click');
       // })
 
+      players.push(data.player);
+      // console.log("**players** ", players);
+      // getUsersInRoomNumber(io, roomName);
+
+      console.log('joined room ', roomName);
+
       socket.on('correct click', function(data){
-        console.log(data);
+        players.forEach( function(player) {
+          for (var id in player) {
+            if (player[id] === socket.id) {
+              player.score += 1;
+              console.log("**player** ", player);
+            }
+          }
+        })
         io.to(roomName).emit('correct click', data);
       })
 

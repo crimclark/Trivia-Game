@@ -1,3 +1,6 @@
+<nav>
+{{!-- placeholder --}}
+</nav>
 <div class="container">
   <h1>Question #<span class="counter">1</span>:</h1>
   <p class="question">{{question}}</p>
@@ -11,4 +14,9 @@
     {{/if}}
   {{/each}}
   </ul>
+  <div class="score-counter">
+    <p>Player Score: <span id="score">0</span></p>
+  </div>
 </div>
+
+<p id="gameUrl" style="display: none">{{gameUrl}}</p>

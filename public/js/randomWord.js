@@ -9,10 +9,6 @@ var randWord = function(){
     i++;
   }
   randomWord = randomWord.join('');
-  // console.log('I am short word: ' + randomWord);
   return randomWord;
 }
-
-// console.log(randWord());
-
 

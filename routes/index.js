@@ -34,7 +34,6 @@ router.get('/game/:id', (req, res, next) => {
     if (err) {
       console.log(err)
     }
-
     if (results.length === 0) {
       getQuestion(function(data, question) {
         answerShuffle.answerShuffle(data, function(shuffleData) {
@@ -69,14 +68,9 @@ router.delete('/game/:id', (req, res, next) => {
   })
 })
 
-
 router.get('/fin_game/', (req, res, next) => {
   res.render('index', {title: 'Login Page'});
 })
-
-router.get('/score', (req, res, next) => {
-  res.render('score', {title: 'Score'});
-});
 
 router.get('/user', (req, res, next) => {
   var userId = req.session.user.id;

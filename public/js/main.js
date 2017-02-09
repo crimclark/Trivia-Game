@@ -48,9 +48,7 @@ function renderHtml(question) {
   counter++
   $('.counter').text(counter)
 
-  // Delete game after 10 questions sequence
-  // Will need to modify to be able to pull in url of game. hide url on page?
-  if(counter === 2 ) {
+  if(counter === 10 ) {
     $.ajax({
       url: $('#gameUrl').text(),
       type: 'delete',

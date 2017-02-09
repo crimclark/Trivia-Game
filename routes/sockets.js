@@ -29,6 +29,7 @@ function sockets(io) {
             }
           }
         })
+        console.log(currentPlayer);
         io.to(roomName).emit('correct click', data);
       })
 
@@ -38,6 +39,20 @@ function sockets(io) {
 
       socket.on('get question', function(question){
         io.to(roomName).emit('get question', question);
+      })
+
+      socket.on('score card', function(){
+
+        var currentPlayers = [];
+
+        players.forEach (function(player) {
+          for (var room in player) {
+            if (player[room] === roomName) {
+              currentPlayers.push(player);
+            }
+          }
+        })
+        io.to(roomName).emit('score card', currentPlayers)
       })
     })
   })

@@ -27,6 +27,12 @@ router.get('/question', (req, res, next) => {
   });
 });
 
+function getUsername(id, callback) {
+  Profile.findById(id, function(err, results){
+    callback(results.name);
+  })
+}
+
 router.get('/game/:id', (req, res, next) => {
   var fullUrl = '/game/' + req.params.id;
   // test /game/XIttXxHc
@@ -46,7 +52,10 @@ router.get('/game/:id', (req, res, next) => {
             },
           });
           gameRoom.save();
-          res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl});
+          getUsername(req.session.user.id, function(name){
+            console.log(name)
+            res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl, name: name});
+          })
           });
         });
       }

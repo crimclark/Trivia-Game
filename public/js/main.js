@@ -3,6 +3,8 @@ var $startBtn = $('#startBtn');
 var $joinBtn = $('#joinBtn');
 var $correct = $('.correct');
 var $incorrect = $('.incorrect');
+var userName = $('#username').val();
+console.log(userName);
 
 var room = window.location.pathname;
 
@@ -12,6 +14,7 @@ socket.on('connect', function() {
   console.log('client connected');
   var player = {
     id: socket.id,
+    name: userName,
     score: 0,
     room: room
   }
@@ -25,20 +28,48 @@ var player = {
   score: 0
 }
 
+// var counter = $('.counter').text()
+// function addToCounter() {
+//   counter++
+//   $('.counter').text(counter);
+
+//   if (counter === 11) {
+//     html = '<div class="container scoreboard"><h1>GAME OVER</h1><h3>*USER* WINS</h3><h5>User1 Score: ##</h5><h5>User2 Score: ##</h5></div>';
+//     $('.container').html(html);
+//     $.ajax({
+//       url: $('#gameUrl').text(),
+//       type: 'delete',
+//     })
+//   }
+// }
+
 var counter = $('.counter').text()
 function addToCounter() {
   counter++
   $('.counter').text(counter);
 
   if (counter === 11) {
-    html = '<div class="container scoreboard"><h1>GAME OVER</h1><h3>*USER* WINS</h3><h5>User1 Score: ##</h5><h5>User2 Score: ##</h5></div>';
-    $('.container').html(html);
+    // html = '<div class="container scoreboard"><h1>GAME OVER</h1><h3>*USER* WINS</h3><h5>User1 Score: ##</h5><h5>User2 Score: ##</h5></div>';
+    // $('.container').html(html);
     $.ajax({
       url: $('#gameUrl').text(),
       type: 'delete',
     })
+    socket.emit('score card')
   }
 }
+
+socket.on('score card', function(players){
+  html = '<div class="container scoreboard"><h1>GAME OVER</h1><h3>*USER* WINS</h3>'
+
+  for (var i = 0; i < players.length; i++) {
+    html += '<h5>' + players[i].name + ' Score: ' + players[i].score + '</h5>';
+  }
+
+  html += '</div>';
+  // html = '<div class="container scoreboard"><h1>GAME OVER</h1><h3>*USER* WINS</h3><h5>User1 Score: ##</h5><h5>User2 Score: ##</h5></div>';
+  $('.container').html(html);
+})
 
 function renderHtml(question) {
   var $question = $('.question');

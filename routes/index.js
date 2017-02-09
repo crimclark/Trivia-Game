@@ -57,9 +57,11 @@ router.get('/game/:id', (req, res, next) => {
         });
       } else if(results) {
           gameRooms.find({url: fullUrl}, function(err, results) {
-            var formatted_results = results[0].firstQuestion[0];
-           res.render('game', {question: formatted_results.question, answers: formatted_results.answers});
-          })
+            var formatted_results = results[0].allQuestions[0];
+            answerShuffle.answerShuffle(formatted_results, function(shuffleData) {
+              res.render('game', {question: formatted_results.question, answers: shuffleData});
+            });
+          });
         }
   });
 });

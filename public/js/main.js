@@ -56,28 +56,14 @@ function renderHtml(question) {
       }
       $('#mc').html(html);
       // Counter
-      var counter = $('.counter').text();
-      counter++;
-      $('.counter').text(counter)
+      addToCounter();
     }
 }
 
 function getQuestion(answer) {
   $.get('/question?gameUrl=' + window.location.pathname, function(question) {
-    socket.emit('correct click', {question: question, answer: answer});
-  });
-  }
-  $('#mc').html(html);
-  // Counter
-  addToCounter();
-}
-
-function getQuestion(answer) {
-  $.get('/question', function(question) {
     socket.emit('correct click', {question: question, answer: answer, score: playerScore});
-    console.log(playerScore);
-    console.log(socket.id);
-  })
+  });
 }
 
 // CORRECT ANSWER CLICK

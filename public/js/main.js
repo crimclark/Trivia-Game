@@ -35,6 +35,7 @@ function renderHtml(question) {
     }
   }
   $('#mc').html(html);
+  addClickEvtHandler();
   // Counter
   var counter = $('.counter').text()
   counter++
@@ -144,24 +145,24 @@ $profEditFormBtn.on('click', function(evt){
 //   }
 // })
 
-$('body').one('click', function(evt) {
-  console.log(evt.target.classList)
-  if (evt.target.classList.contains('correct')) {
-    $(evt.target).addClass('green');
-    console.log('correct button')
-    var answerText = $(this).text()
-    getQuestion(answerText)
-  } else if(evt.target.classList.contains('incorrect')) {
-      var answerText = $(this).text();
+function addClickEvtHandler () {
+  $('#mc').one('click', function(evt) {
+    if (evt.target.classList.contains('correct')) {
+      $(evt.target).addClass('green');
+      var answerText = $(evt.target).text()
+      getQuestion(answerText)
+    } else if(evt.target.classList.contains('incorrect')) {
+      var answerText = $(evt.target).text();
       $(evt.target).addClass('red');
       socket.emit('incorrect click', answerText)
-      if ($('.red').length === 1) {
+      if ($('.red').length === 2) {
         getQuestion();
       }
-  }
-})
+    }
+  })
+};
 
-
+addClickEvtHandler();
 
 
 

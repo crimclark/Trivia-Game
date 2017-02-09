@@ -47,7 +47,7 @@ router.get('/game/:id', (req, res, next) => {
             },
           });
           gameRoom.save();
-          res.render('game', {question: question, answers: shuffleData});
+          res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl});
           })
         })
       }
@@ -64,11 +64,14 @@ router.delete('/game/:id', (req, res, next) => {
   var fullUrl = '/game/' + req.params.id;
   gameRooms.findOneAndRemove({url: fullUrl}, function(err) {
     if (err) {
-      res.send(err)
-    } else {
-      res.send('you tryin to delete a game')
+      console.log(err)
     }
   })
+})
+
+
+router.get('/fin_game/', (req, res, next) => {
+  res.render('index', {title: 'Login Page'});
 })
 
 router.get('/score', (req, res, next) => {

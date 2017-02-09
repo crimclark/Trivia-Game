@@ -48,15 +48,12 @@ function renderHtml(question) {
   counter++
   $('.counter').text(counter)
 
-  // Delete game after 10 questions
-  // Will need to modify to be able to pull in url of game hide url on page?
+  // Delete game after 10 questions sequence
+  // Will need to modify to be able to pull in url of game. hide url on page?
   if(counter === 2 ) {
     $.ajax({
-      url: '/game/lmSl6TVL',
+      url: $('#gameUrl').text(),
       type: 'delete',
-    })
-    .done(function(response) {
-      console.log(response);
     })
   }
 }

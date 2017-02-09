@@ -26,16 +26,17 @@ function sockets(io) {
               player.score += 1;
               console.log("**player** ", player);
               currentPlayer = player;
+              io.sockets.connected[socket.id].emit('get score', currentPlayer.score)
             }
           }
         })
         io.to(roomName).emit('correct click', data);
         // io.to(roomName).emit('get score', currentPlayer.score);
-        console.log('socket id: ', socket.id);
-        console.log('currentplayer id: ', currentPlayer.id);
-        console.log('id is ', id);
-        console.log('current player is ', currentPlayer)
-        socket.broadcast.to(socket.id).emit('get score', currentPlayer.score)
+        // console.log('socket id: ', socket.id);
+        // console.log('currentplayer id: ', currentPlayer.id);
+        // console.log('id is ', id);
+        // console.log('current player is ', currentPlayer)
+        // io.sockets.connected[socket.id].emit('get score', currentPlayer.score)
       })
 
       socket.on('incorrect click', function(data){
@@ -51,9 +52,14 @@ function sockets(io) {
       //       }
       //     }
       //   })
-      //   console.log('***current player*** ', currentPlayer);
-      //   socket.broadcast.to(currentPlayer.id).emit('get score', currentPlayer.score);
+      //   // console.log('***current player*** ', currentPlayer);
+      //   io.sockets.connected[socket.id].emit('get score', currentPlayer.score);
       // })
+
+      // socket.on('test broadcast', function(){
+      //   io.sockets.connected[socket.id].emit('test broadcast', socket.id);
+      // })
+
     })
   })
 }

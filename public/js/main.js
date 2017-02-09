@@ -17,12 +17,12 @@ socket.on('connect', function() {
   socket.emit('room', {room: room, player: player});
 });
 
-var playerScore = 0;
+// var playerScore = 0;
 
-var player = {
-  id: socket.id,
-  score: 0
-}
+// var player = {
+//   id: socket.id,
+//   score: 0
+// }
 
 function renderHtml(question) {
   var $question = $('.question');
@@ -56,8 +56,8 @@ function renderHtml(question) {
 
 function getQuestion(answer) {
   $.get('/question', function(question) {
-    socket.emit('correct click', {question: question, answer: answer, score: playerScore});
-    console.log(playerScore);
+    socket.emit('correct click', {question: question, answer: answer});
+    // console.log(playerScore);
     console.log(socket.id);
   })
 }
@@ -77,7 +77,7 @@ socket.on('get score', function(score){
 // CORRECT ANSWER CLICK
 $('body').on('click', '.correct', function(event) {
   var answerText = $(this).text();
-  playerScore ++;
+  // playerScore++;
   getQuestion(answerText);
 });
 
@@ -140,5 +140,17 @@ $profEditFormBtn.on('click', function(evt){
   $profEdit.css('display', 'none');
   $profUserNameEdit.css('display', 'inline');
 });
+
+
+//TEST
+
+// $('body').on('click', function(data){
+//   console.log('clicked')
+//   socket.emit('test broadcast', socket.id);
+// })
+
+// socket.on('test broadcast', function(data){
+//   console.log('your socket id is ' + data);
+// })
 
 

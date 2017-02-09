@@ -49,8 +49,8 @@ function renderHtml(question) {
 }
 
 
+var counter = $('.counter').text();
 function addToCounter() {
->>>>>>> reviewDataStorage
   counter++
   $('.counter').text(counter);
   if (counter === 11) {
@@ -118,9 +118,9 @@ $profEditFormBtn.on('click', function(evt){
 //   getQuestion(answerText);
 // });
 
-// WRONG ANSWER CLICK
+// // WRONG ANSWER CLICK
 // $('body').on('click', '.incorrect', function(event) {
-//   // console.log($(this).text());
+// //   // console.log($(this).text());
 //   var answerText = $(this).text();
 //   socket.emit('incorrect click', answerText);
 // });
@@ -137,7 +137,9 @@ function addClickEvtHandler () {
       $(evt.target).addClass('green');
       var answerText = $(evt.target).text()
       getQuestion(answerText)
-    } else if(evt.target.classList.contains('incorrect')) {
+    }
+
+    if(evt.target.classList.contains('incorrect')) {
       var answerText = $(evt.target).text();
       $(evt.target).addClass('red');
       socket.emit('incorrect click', answerText)

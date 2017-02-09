@@ -1,5 +1,6 @@
 var socket = io();
 var $startBtn = $('#startBtn');
+var $joinBtn = $('#joinBtn');
 var $correct = $('.correct');
 var $incorrect = $('.incorrect');
 
@@ -106,6 +107,11 @@ $startBtn.on('click', function(){
   console.log(randURL)
  $('form').attr('action', `${randURL}`);
 });
+
+// $joinBtn.on('click', function(){
+//   var randURL = '/game/';
+//  $('form')[1].attr('action', `${randURL}`);
+// });
 
 //Profile Update rendering
 var $profEdit = $('.profileEdit');

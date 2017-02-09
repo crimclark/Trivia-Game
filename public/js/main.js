@@ -22,6 +22,21 @@ var player = {
   score: 0
 }
 
+var counter = $('.counter').text()
+function addToCounter() {
+  counter++
+  $('.counter').text(counter);
+
+  if (counter === 11) {
+    html = '<div class="container scoreboard"><h1>GAME OVER</h1><h3>*USER* WINS</h3><h5>User1 Score: ##</h5><h5>User2 Score: ##</h5></div>';
+    $('.container').html(html);
+    $.ajax({
+      url: $('#gameUrl').text(),
+      type: 'delete',
+    })
+  }
+}
+
 function renderHtml(question) {
   var $question = $('.question');
   $question.text(question.question);
@@ -36,19 +51,7 @@ function renderHtml(question) {
   }
   $('#mc').html(html);
   // Counter
-  var counter = $('.counter').text()
-  counter++
-  $('.counter').text(counter)
-
-  if(counter === 10 ) {
-    $.ajax({
-      url: $('#gameUrl').text(),
-      type: 'delete',
-    })
-    $.get('/score', function(res) {
-      console.log(res);
-    })
-  }
+  addToCounter();
 }
 
 function getQuestion(answer) {

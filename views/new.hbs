@@ -5,6 +5,7 @@
 </nav>
 <div class="container">
   <h1>{{ title }}</h1>
+  <form method="GET">
   <select class="category">
     <option value="Option 1">Select a Category:</option>
     <option value="Option 2">General Knowledge</option>
@@ -16,8 +17,6 @@
     <option value="Option 3">Science: Computers</option>
     <option value="Option 3">Sports</option>
   </select>
-
-  <form method="GET">
     <button class="button" id="startBtn">Create Game</button>
   </form>
   <form method="GET" action="/join">

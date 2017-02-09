@@ -23,3 +23,6 @@ body {
 .profileEdit {
   display: none;
 }
+.score-li {
+  list-style: none;
+}

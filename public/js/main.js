@@ -9,27 +9,20 @@ var startBtn = $('#start-btn');
 
 socket.on('connect', function() {
   console.log('client connected');
-  socket.emit('room', room);
+  var player = {
+    id: socket.id,
+    score: 0,
+    room: room
+  }
+  socket.emit('room', {room: room, player: player});
 });
 
-// var greenBtn = $('#green');
-// var redBtn = $('#red');
+var playerScore = 0;
 
-// greenBtn.on('click', function(){
-//   socket.emit('green click')
-// });
-
-// redBtn.on('click', function(){
-//   socket.emit('red click')
-// });
-
-// socket.on('green click', function() {
-//   greenBtn.css('color', 'green');
-// });
-
-// socket.on('red click', function() {
-//   redBtn.css('color', 'red');
-// });
+var player = {
+  id: socket.id,
+  score: 0
+}
 
 function renderHtml(question) {
   var $question = $('.question');
@@ -43,30 +36,56 @@ function renderHtml(question) {
       html += '<li class="mc-list"><button class="mc-btn incorrect" data-correct="false">' + answer[i].answer + '</button></li>';
     }
   }
-  // console.log(html);
   $('#mc').html(html);
+  // Counter
+  var counter = $('.counter').text()
+  counter++
+  $('.counter').text(counter)
+  if (counter === 10) {
+    $.get('/score', function(res) {
+      console.log(res);
+
+
+    })
+  }
 }
 
 function getQuestion(answer) {
   $.get('/question', function(question) {
-    socket.emit('correct click', {question: question, answer: answer});
+    socket.emit('correct click', {question: question, answer: answer, score: playerScore});
+    console.log(playerScore);
+    console.log(socket.id);
   })
 }
+
+
+
+//GET SCORE CLICK
+$('body').on('click', '#mc', function(event) {
+  socket.emit('get score');
+})
+
+socket.on('get score', function(score){
+  console.log('score is ', score)
+  $('#score').text(score);
+})
 
 // CORRECT ANSWER CLICK
 $('body').on('click', '.correct', function(event) {
   var answerText = $(this).text();
+  playerScore ++;
   getQuestion(answerText);
 });
 
 socket.on('correct click', function(data) {
-  // $correct.addClass('green');
   console.log(data.answer)
   $('li').each( function(el) {
     if ($(this).text() === data.answer) {
       $(this).children().addClass('green');
     }
   })
+    console.log(data.score);
+    // $('#score').text(data.score);
   // ajax => next question
   setTimeout(function() {
     renderHtml(data.question);
@@ -83,8 +102,6 @@ $('body').on('click', '.incorrect', function(event) {
 socket.on('incorrect click', function(data) {
   // console.log(data);
   $('li').each( function(el) {
-    // console.log($(this));
-    // console.log($(this).text());
     if ($(this).text() === data) {
       $(this).children().addClass('red');
     }
@@ -92,7 +109,7 @@ socket.on('incorrect click', function(data) {
 });
 
 $('body').on('click', '.incorrect', function() {
-  console.log($('.red').length);
+  // console.log($('.red').length);
   if ($('.red').length === 1) {
     getQuestion();
   }

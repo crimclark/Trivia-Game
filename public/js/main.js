@@ -43,6 +43,7 @@ function renderHtml(question) {
     $.get('/score', function(res) {
       console.log(res);
 
+
     })
   }
 }
@@ -54,6 +55,18 @@ function getQuestion(answer) {
     console.log(socket.id);
   })
 }
+
+
+
+//GET SCORE CLICK
+$('body').on('click', '#mc', function(event) {
+  socket.emit('get score');
+})
+
+socket.on('get score', function(score){
+  console.log('score is ', score)
+  $('#score').text(score);
+})
 
 // CORRECT ANSWER CLICK
 $('body').on('click', '.correct', function(event) {
@@ -69,6 +82,8 @@ socket.on('correct click', function(data) {
       $(this).children().addClass('green');
     }
   })
+    console.log(data.score);
+    // $('#score').text(data.score);
   // ajax => next question
   setTimeout(function() {
     renderHtml(data.question);

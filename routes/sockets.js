@@ -11,17 +11,7 @@ function sockets(io) {
 
       socket.join(roomName);
 
-      // socket.on('red click', function() {
-      //   io.to(roomName).emit('red click');
-      // })
-
-      // socket.on('green click', function(){
-      //   io.to(roomName).emit('green click');
-      // })
-
       players.push(data.player);
-      // console.log("**players** ", players);
-      // getUsersInRoomNumber(io, roomName);
 
       console.log('joined room ', roomName);
 

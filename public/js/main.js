@@ -21,16 +21,19 @@ socket.on('connect', function() {
   socket.emit('room', {room: room, player: player});
 });
 
-var playerScore = 0;
+function removeEventListeners() {
+  $('body').off('click', '.correct', correctAnswer);
+  $('body').off('click', '.incorrect', incorrectAnswer);
+}
 
-var player = {
-  id: socket.id,
-  score: 0
+function addEventListeners() {
+  $('body').on('click', '.correct', correctAnswer);
+  $('body').on('click', '.incorrect', incorrectAnswer);
 }
 
 var counter = $('.counter').text()
 function addToCounter() {
-  counter++
+  counter++;
   $('.counter').text(counter);
   if (counter === 11) {
     $.ajax({
@@ -42,19 +45,14 @@ function addToCounter() {
 }
 
 socket.on('score card', function(players){
-
   players.sort(function(a, b){
     return b.score - a.score;
   })
-
   html = '<div class="container scoreboard"><h1>GAME OVER</h1><h3>' + players[0].name + ' WINS</h3>';
-
   for (var i = 0; i < players.length; i++) {
     html += '<h5>' + players[i].name + ' Score: ' + players[i].score + '</h5>';
   }
-
   html += '</div>';
-  // html = '<div class="container scoreboard"><h1>GAME OVER</h1><h3>*USER* WINS</h3><h5>User1 Score: ##</h5><h5>User2 Score: ##</h5></div>';
   $('.container').html(html);
 })
 
@@ -73,23 +71,13 @@ function renderHtml(question) {
   $('#mc').html(html);
   // Counter
   addToCounter();
+  addEventListeners();
 }
 
-function getQuestion(answer) {
+function getQuestion(emitTo, answer) {
   var cat = $('#category').text()
   $.get(`/question?category=${cat}`, function(question) {
-    socket.emit('correct click', {question: question, answer: answer, score: playerScore});
-    console.log(playerScore);
-    console.log(socket.id);
-  })
-}
-
-function getQuestionTie() {
-  var cat = $('#category').text()
-  $.get(`/question?category=${cat}`, function(question) {
-    socket.emit('get question', question);
-    console.log(playerScore);
-    console.log(socket.id);
+    socket.emit(emitTo, {question: question, answer: answer});
   })
 }
 
@@ -98,11 +86,14 @@ socket.on('get question', function(question){
 })
 
 // CORRECT ANSWER CLICK
-$('body').on('click', '.correct', function(event) {
+
+function correctAnswer() {
+  removeEventListeners();
   var answerText = $(this).text();
-  playerScore ++;
-  getQuestion(answerText);
-});
+  getQuestion('correct click', answerText);
+}
+
+$('body').on('click', '.correct', correctAnswer);
 
 socket.on('correct click', function(data) {
   $('li').each( function(el) {
@@ -110,21 +101,25 @@ socket.on('correct click', function(data) {
       $(this).children().addClass('green');
     }
   })
-  // ajax => next question
   setTimeout(function() {
     renderHtml(data.question);
   }, 1000);
 });
 
 // WRONG ANSWER CLICK
-$('body').on('click', '.incorrect', function(event) {
-  // console.log($(this).text());
+
+function incorrectAnswer() {
+  removeEventListeners();
   var answerText = $(this).text();
   socket.emit('incorrect click', answerText);
-});
+  if ($('.red').length === 1) {
+    getQuestion('get question', answerText);
+  }
+}
+
+$('body').on('click', '.incorrect', incorrectAnswer)
 
 socket.on('incorrect click', function(data) {
-  // console.log(data);
   $('li').each( function(el) {
     if ($(this).text() === data) {
       $(this).children().addClass('red');
@@ -132,18 +127,11 @@ socket.on('incorrect click', function(data) {
   })
 });
 
-$('body').on('click', '.incorrect', function() {
-  if ($('.red').length === 1) {
-    getQuestionTie();
-  }
-})
-
-
 socket.on('get score', function(score){
   $('#score').text(score);
 })
 
-//ROOM URL PSEUDOCODE
+
 $startBtn.on('click', function(){
   // user selects a category from dropdown menu
   // on start button click, grab the value of selected category option

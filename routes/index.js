@@ -8,7 +8,7 @@ const gameRooms = require('../models/gameRooms.js');
 
 router.get('/', (req, res, next) => {
   if (!req.session.user) {
-    res.render('index', {title: 'Login Page'});
+    res.render('index', {title: 'Trivia Wars'});
   } else {
       const user = JSON.stringify(req.session.user);
       res.render('new', {title: 'New Game'});
@@ -16,6 +16,24 @@ router.get('/', (req, res, next) => {
 });
 
 // Create
+router.get('/new', (req, res, next) => {
+  res.render('new', {title: 'Trivia Wars'});
+});
+
+router.get('/question', (req, res, next) => {
+  getQuestion(function(data, question) {
+    answerShuffle.answerShuffle(data, function(shuffleData) {
+      res.send({question: question, answers: shuffleData});
+    });
+  });
+});
+
+function getUsername(id, callback) {
+  Profile.findById(id, function(err, results){
+    callback(results.name);
+  })
+}
+
 router.get('/game/:id', (req, res, next) => {
   var fullUrl = '/game/' + req.params.id;
   gameRooms.find({url: fullUrl }, function(err, results) {
@@ -23,7 +41,7 @@ router.get('/game/:id', (req, res, next) => {
       console.log(err);
     }
     if (results.length === 0) {
-      getQuestion(function(data, question) {
+      getQuestion('query here', function(data, question) {
         answerShuffle.answerShuffle(data, function(shuffleData) {
           var gameRoom = new gameRooms({
             url: fullUrl,
@@ -34,14 +52,17 @@ router.get('/game/:id', (req, res, next) => {
             },
           });
           gameRoom.save();
-          res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl});
+          getUsername(req.session.user.id, function(name){
+            console.log('name is ' + name);
+            res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl, name: name});
+          })
           });
         });
       }
       else if(results) {
         gameRooms.find({url: fullUrl}, function(err, results) {
           var formatted_results = results[0].firstQuestion[0];
-         res.render('game', {question: formatted_results.question, answers: formatted_results.answers});
+          res.render('game', {question: formatted_results.question, answers: formatted_results.answers, name: "Guest"});
         });
       }
     });

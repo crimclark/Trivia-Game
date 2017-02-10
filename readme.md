@@ -17,7 +17,7 @@ Jake "Wolverine" Miller
 - Front-End / Game Logic
 - Back-End / Routing
 
-Justin "Juggernaut" Samuels
+Justin "Rogue" Samuels
 - GitHub Manager
 - Socket.io
 - Back-End / Database & Mongoose

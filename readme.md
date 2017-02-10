@@ -31,7 +31,13 @@ Justin "Juggernaut" Samuels
 
 ## Overview
 
-Technologies Used: 
+### **triviaGame**
+
+**triviaGame** is a multi-player trivia game, where players race against each 
+other to correctly answer the most questions in a game. Players have the option 
+to play in single-player mode or challenge a friend in a multiplayer game.
+
+### Technologies Used 
 - Socket.io
 - Mongoose
 - Ajax
@@ -45,13 +51,22 @@ Technologies Used:
 - Node.js
 - [Google API](https://console.developers.google.com/apis/library)
 - [Open Trivia DB API](https://opentdb.com/api_config.php)
-- [Skeleton CSS](http://getskeleton.com/)
+- :skull: [Skeleton CSS](http://getskeleton.com/)
 - Git
-- [GitHub](https://github.com/WDI-DTLA-41-Group-3/Trivia-Game)
+- :octocat: [GitHub](https://github.com/WDI-DTLA-41-Group-3/Trivia-Game)
 - Heroku
 - [Project Board](https://github.com/WDI-DTLA-41-Group-3/Trivia-Game/projects/2)
 
-User Stories & App Features: 
+
+### Approach
+
+After completing the mini agile sprint project before this project, as a group we knew 
+that we needed to spend more time on the planning process.
+
+### Obstacles
+
+
+### User Stories & App Features
 - [x] When a user visits site for the first time, they will be directed to a login page
 - [x] Users will be able to log in via Google oauth with a Gmail account
 - [x] After login, the user will be redirected to 'new game' page
@@ -81,18 +96,18 @@ User Stories & App Features:
 - ** Authorization middleware prevents users from updating each others' usernames
 - ** Authorization middleware prevents users from deleting each others' profiles
 
-Wireframes: 
+
+### RESTful API
+
+
+### ERD
+
+![ERD](http://i.imgur.com/iExY0Dl.png)
+
+### Wireframes
 
 ![Wireframe #1](http://i.imgur.com/twJZsCN.jpg?2)
 ![Wireframe #2](http://i.imgur.com/mw3L4IP.jpg?2)
 ![Wireframe #3](http://i.imgur.com/PMmLOYg.jpg?1)
 ![Wireframe #4](http://i.imgur.com/E2WTJqJ.jpg?1)
 ![Wireframe #5](http://i.imgur.com/pyayjRl.jpg?1)
-
-Approach: 
-
-
-
-
-Obstacles: 
-

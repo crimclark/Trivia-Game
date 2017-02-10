@@ -140,15 +140,10 @@ socket.on('get score', function(score){
 
 
 $startBtn.on('click', function(){
-  // user selects a category from dropdown menu
-  // on start button click, grab the value of selected category option
-  // ajax request to send the category to server '/game'
   var cat = $('select').val()
-  if(cat != 'selectOne') {
-    var randURL = '/game/'
-    randURL += randWord()
-    $('form').attr('action', `${randURL}?category=${cat}`);
-  }
+  var randURL = '/game/'
+  randURL += randWord()
+  $('form').attr('action', `${randURL}?category=${cat}`);
 });
 
 

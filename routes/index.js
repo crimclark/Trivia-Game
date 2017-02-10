@@ -39,6 +39,7 @@ router.get('/game/:id', (req, res, next) => {
   if (!req.session.user) {
     res.redirect('/');
   } else {
+    console.log(req.session.user.id)
       var cat = req.query.category
       var fullUrl = '/game/' + req.params.id;
       gameRooms.find({url: fullUrl }, function(err, results) {
@@ -60,7 +61,7 @@ router.get('/game/:id', (req, res, next) => {
               });
               gameRoom.save();
               getUsername(req.session.user.id, function(name){
-                res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl, name: name, category: cat, playerMode: req.query.playerMode});
+                res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl, name: name, category: cat, playerMode: req.query.playerMode, mongoId: req.session.user.id, avatar: req.session.user.image.url});
               });
             });
           });
@@ -68,7 +69,7 @@ router.get('/game/:id', (req, res, next) => {
             gameRooms.find({url: fullUrl}, function(err, results) {
               var formatted_results = results[0].firstQuestion[0];
               getUsername(req.session.user.id, function(name){
-                res.render('game', {question: formatted_results.question, answers: formatted_results.answers, name: name, category: cat});
+                res.render('game', {question: formatted_results.question, answers: formatted_results.answers, name: name, category: cat, playerMode: req.query.playerMode, mongoId: req.session.user.id, avatar: req.session.user.image.url});
               });
             });
           }
@@ -111,9 +112,13 @@ router.get('/user', (req, res, next) => {
 });
 
 router.get('/browse', (req, res, next) => {
-  Profile.find({}, (err, allData) => {
-    res.render('browse',  { title: 'browseProfiles', profile: allData, avatar: req.session.user.image.url});
-  });
+  if (!req.session.user) {
+    res.redirect('/')
+  } else {
+    Profile.find({}, (err, allData) => {
+      res.render('browse',  { title: 'browseProfiles', profile: allData, avatar: req.session.user.image.url});
+    });
+  }
 });
 
 router.get('/user/:id', (req, res, next) => {
@@ -135,6 +140,18 @@ router.put('/user', (req, res, next) => {
   Profile.update({_id: userId}, { $set: { name: req.body.newName }},(err, userData) => {
     res.redirect('/user');
   });
+});
+
+router.put('/scores', (req, res, next) => {
+  console.log('player is', req.body.player);
+  var winner = req.body.winner;
+  var loser = req.body.loser;
+
+  Profile.update({name: winner.name}, {$inc: {'score.gamesWon': 1, 'score.gamesPlayed': 1}}, (err, results)=>{
+    Profile.update({name: loser.name}, {$inc: {'score.gamesPlayed': 1}}, (err, results)=>{
+      res.send(results);
+    })
+  })
 });
 
 // Delete

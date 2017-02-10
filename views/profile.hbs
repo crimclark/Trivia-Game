@@ -7,12 +7,12 @@
   <h1 class="fadeIn page-title">{{ title }}</h1>
   <img class="prof-avatar" src="{{ info.avatar }}">
   <p id="profUserNameEdit"> {{ info.name }}  <a href="#" id="profEditLink"> edit</a></p>
-  <form method="post" action="/user" class="profileEdit">
+  <form action="/user" class="profileEdit">
     <input id="nameReplace" name="newName" class="profileEdit" placeholder="update username">
     <button type="submit" class="profileEdit">submit</button>
   </form>
-  <p>gamesWon: {{ wins }}</p>
-  <p>gamesPlayed: {{ totalGames }}</p>
+  <p>gamesWon: {{ info.score.gamesWon }}</p>
+  <p>gamesPlayed: {{ info.score.gamesPlayed }}</p>
   <a href="/auth/logout">logout</a>
 </div>
 

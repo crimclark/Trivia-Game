@@ -6,10 +6,11 @@ body {
   margin-top: 8em;
 }
 nav {
-  /*border-bottom: .8px solid #E0E0E0;*/
   background-color: #E0F2F1;
+  opacity: 1;
   height: 2.4em;
   top: 0;
+  z-index: 100;
   position: fixed;
   width: 100%;
 }
@@ -38,6 +39,27 @@ img.avatar {
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   border-radius: 50%;
+}
+.prof-avatar {
+  display: inline-block;
+  width: 1.7em;
+  height: 1.7em;
+  margin-right: 1em;
+  /*margin-right: .6em;*/
+  /*position: relative;*/
+  /*-webkit-border-radius: 50%;*/
+  /*-moz-border-radius: 50%;*/
+  border-radius: 50%;
+  float: left;
+}
+p.prof-name {
+  display: inline-block;
+}
+a.prof-name {
+  padding-top: 0;
+  line-height: 2;
+  text-decoration: none;
+  color: #4DB6AC;
 }
 img.icon {
   display: inline;

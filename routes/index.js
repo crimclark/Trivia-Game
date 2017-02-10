@@ -8,19 +8,19 @@ const gameRooms = require('../models/gameRooms.js');
 
 router.get('/', (req, res, next) => {
   if (!req.session.user) {
-    res.render('index', {title: 'trivia | group 3'});
+    res.render('index', {title: 'trivia | group-3'});
   } else {
     const user = JSON.stringify(req.session.user);
     console.log('req.params ', req.params);
     console.log('req.query ', req.query);
 
-    res.render('new', {title: 'new game'});
+    res.render('new', {title: 'newGame'});
 
   }
 });
 
 router.get('/new', (req, res, next) => {
-  res.render('new', {title: 'new game'});
+  res.render('new', {title: 'newGame'});
 });
 
 router.post('/', (req, res, next) => {
@@ -29,7 +29,7 @@ router.post('/', (req, res, next) => {
     console.log('req.query ', req.query);
     console.log('req.body.value: ', req.body.value);
 
-    res.render('new', {title: 'new game'});
+    res.render('new', {title: 'newGame'});
 })
 
 router.get('/question', (req, res, next) => {
@@ -95,7 +95,7 @@ router.delete('/game/:id', (req, res, next) => {
 router.get('/user', (req, res, next) => {
   var userId = req.session.user.id;
   Profile.findOne({_id: userId}, (err, userData) => {
-    res.render('profile', {title: 'player profile', info: userData});
+    res.render('profile', {title: 'playerProfile', info: userData});
   });
 });
 
@@ -115,13 +115,13 @@ router.post('/user', (req, res, next) => {
 router.get('/user/:id', (req, res, next) => {
   var userId = req.params.id;
   Profile.findOne({_id: userId}, (err, userData) => {
-    res.render('pubProfData', {title: 'player profile', info: userData});
+    res.render('pubProfData', {title: 'playerProfile', info: userData});
   });
 });
 
 router.get('/browse', (req, res, next) => {
   Profile.find({}, (err, allData) => {
-    res.render('browse',  { title: 'browse profiles', profile: allData });
+    res.render('browse',  { title: 'browseProfiles', profile: allData });
   });
 });
 

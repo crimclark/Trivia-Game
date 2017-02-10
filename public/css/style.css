@@ -40,6 +40,27 @@ img.avatar {
   -moz-border-radius: 50%;
   border-radius: 50%;
 }
+.prof-avatar {
+  display: inline-block;
+  width: 1.7em;
+  height: 1.7em;
+  margin-right: 1em;
+  /*margin-right: .6em;*/
+  /*position: relative;*/
+  /*-webkit-border-radius: 50%;*/
+  /*-moz-border-radius: 50%;*/
+  border-radius: 50%;
+  float: left;
+}
+p.prof-name {
+  display: inline-block;
+}
+a.prof-name {
+  padding-top: 0;
+  line-height: 2;
+  text-decoration: none;
+  color: #4DB6AC;
+}
 img.icon {
   display: inline;
   width: 1.7em;

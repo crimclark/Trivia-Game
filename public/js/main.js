@@ -64,8 +64,16 @@ socket.once('score card winner', function(players){
     $('.container').html(html);
     if (players.winner.id === socket.id) {
       console.log('sent put request');
-      putScores(winner, loser);
+      console.log('put score for winner')
+      //putScores(winner, loser);
+      putScores(winner, loser)
     }
+
+    // if(players.loser.id === socket.id) {
+    //   console.log('put score for loser')
+    //   putScores(loser)
+
+    // }
   } else {
     html = '<div class="container scoreboard"><h1>GAME RESULTS</h1><h5> Your Score: ' + winner.score + '</h5>';
     $('.container').html(html);
@@ -152,6 +160,7 @@ function incorrectAnswer() {
     }
   } else {
       if ($('.red').length === 1) {
+        removeEventListeners();
         getQuestion('get question', answerText);
       }
     }

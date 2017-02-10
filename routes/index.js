@@ -39,6 +39,7 @@ router.get('/game/:id', (req, res, next) => {
   if (!req.session.user) {
     res.redirect('/');
   } else {
+    console.log(req.session.user.id)
       var cat = req.query.category
       var fullUrl = '/game/' + req.params.id;
       gameRooms.find({url: fullUrl }, function(err, results) {
@@ -138,13 +139,14 @@ router.put('/user', (req, res, next) => {
 });
 
 router.put('/scores', (req, res, next) => {
-  console.log('winner is', req.body.winner);
-  console.log('loser is', req.body.loser);
-  var loser = req.body.loser;
+  console.log('player is', req.body.player);
   var winner = req.body.winner;
+  var loser = req.body.loser;
 
-  Profile.update({_id: winner.mongoId}, {$inc: {score: { gamesWon: 1}}}, (err, results)=>{
-    res.send(results);
+  Profile.update({name: winner.name}, {$inc: {'score.gamesWon': 1, 'score.gamesPlayed': 1}}, (err, results)=>{
+    Profile.update({name: loser.name}, {$inc: {'score.gamesPlayed': 1}}, (err, results)=>{
+      res.send(results);
+    })
   })
 });
 

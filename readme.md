@@ -17,7 +17,7 @@ Jake "Wolverine" Miller
 - Front-End / Game Logic
 - Back-End / Routing
 
-Justin "Rogue" Samuels
+Justin "Juggernaut" Samuels
 - GitHub Manager
 - Socket.io
 - Back-End / Database & Mongoose
@@ -25,6 +25,24 @@ Justin "Rogue" Samuels
 ## Overview
 
 Technologies Used: 
+- Socket.io
+- Mongoose
+- Ajax
+- JQuery
+- Cascading Style Sheets
+- Html
+- Handlebars
+- Mongo
+- Express
+- Node.js
+- Google API
+- Skeleton CSS
+- JavaScript
+- Trivia API (opentdb)
+- Git
+- Github
+- Heroku
+
 
 User Stories & App Features: 
 - [x] When a user visits site for the first time, they will be directed to a login page

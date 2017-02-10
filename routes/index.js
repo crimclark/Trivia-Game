@@ -53,6 +53,7 @@ router.get('/game/:id', (req, res, next) => {
         answerShuffle.answerShuffle(data, function(shuffleData) {
           var gameRoom = new gameRooms({
             url: fullUrl,
+            gameMode: req.query.playerMode,
             activeUsers: 1,
             firstQuestion: {
               question: question,
@@ -62,8 +63,7 @@ router.get('/game/:id', (req, res, next) => {
           });
           gameRoom.save();
           getUsername(req.session.user.id, function(name){
-            console.log('name is ' + name);
-            res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl, name: name, category: cat});
+            res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl, name: name, category: cat, playerMode: req.query.playerMode});
           })
           });
         });

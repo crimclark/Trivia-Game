@@ -3,27 +3,30 @@
   <a class="menu" href="/user"><img class="avatar" src="{{avatar}}" alt="avatar"></a>
   <a class="menu" href="/browse"><img class="icon" src="http://i.imgur.com/DtKBRC0.png?1" alt="browse"></a>
 </nav>
-<div class="container">
+<div class="main-div container">
   <h1>{{ title }}</h1>
 
   <form method="GET">
-  <select id="categories" name="category" required>
-    <option value="selectOne">selectCategory:</option>
-    <option value="9">General Knowledge</option>
-    <option value="29">Entertainment: Comics</option>
-    <option value="12">Entertainment: Music</option>
-    <option value="14">Entertainment: Television</option>
-    <option value="22">Geography</option>
-    <option value="23">History</option>
-    <option value="18">Science: Computers</option>
-    <option value="21">Sports</option>
-  </select>
-    <button class="game-btn button" id="startBtn">Create New Game</button>
+    <select id="categories" name="category" required>
+      <option value="selectOne"><span class="select-cat">selectCategory:</span></option>
+      <option value="9">General Knowledge</option>
+      <option value="29">Entertainment: Comics</option>
+      <option value="12">Entertainment: Music</option>
+      <option value="14">Entertainment: Television</option>
+      <option value="22">Geography</option>
+      <option value="23">History</option>
+      <option value="18">Science: Computers</option>
+      <option value="21">Sports</option>
+    </select>
+    <br>
+    <button class="game-btn button" id="startBtn">Create</button>
   </form>
+
   <span>- or -</span>
+
   <br><br>
   <form method="GET" action="/join">
-    <button class="game-btn button" id='joinBtn'>Join A Game</button>
+    <button class="game-btn button" id='joinBtn'>Join</button>
   </form>
 
 </div>

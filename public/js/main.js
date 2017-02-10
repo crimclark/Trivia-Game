@@ -157,18 +157,25 @@ $startBtn.on('click', function(){
 
 //Profile Update rendering
 var $profEdit = $('.profileEdit');
-var $profEditFormBtn = $('.profileEdit>button');
+var $profEditDivBtn = $('.profileEdit>button');
 var $profEditLink = $('#profEditLink');
-var $profUserNameEdit = $('#profUserNameEdit')
+var $profUserNameEdit = $('#profUserNameEdit');
+var $input = $('.profileEdit>input');
+
 
 $profEditLink.on('click', function(evt){
   $profEdit.css('display', 'inline');
   $profUserNameEdit.css('display', 'none');
 });
 
-$profEditFormBtn.on('click', function(evt){
+$profEditDivBtn.on('click', function(evt){
   $profEdit.css('display', 'none');
   $profUserNameEdit.css('display', 'inline');
+  $.ajax({
+    url: '/user',
+    method: 'PUT',
+    data: {newName: $input.val()}
+  });
 });
 
 

@@ -36,6 +36,10 @@ function getUsername(id, callback) {
 }
 
 router.get('/game/:id', (req, res, next) => {
+   if (!req.session.user) {
+    res.redirect('/')
+   }
+   else {
   var cat = req.query.category
   var fullUrl = '/game/' + req.params.id;
   gameRooms.find({url: fullUrl }, function(err, results) {
@@ -65,10 +69,13 @@ router.get('/game/:id', (req, res, next) => {
       else if(results) {
         gameRooms.find({url: fullUrl}, function(err, results) {
           var formatted_results = results[0].firstQuestion[0];
-          res.render('game', {question: formatted_results.question, answers: formatted_results.answers, name: "Guest", category: cat});
+          getUsername(req.session.user.id, function(name){
+            res.render('game', {question: formatted_results.question, answers: formatted_results.answers, name: name, category: cat});
+          })
         });
       }
     });
+}
 });
 
 // Read

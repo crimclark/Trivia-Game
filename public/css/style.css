@@ -6,10 +6,11 @@ body {
   margin-top: 8em;
 }
 nav {
-  /*border-bottom: .8px solid #E0E0E0;*/
   background-color: #E0F2F1;
+  opacity: 1;
   height: 2.4em;
   top: 0;
+  z-index: 100;
   position: fixed;
   width: 100%;
 }

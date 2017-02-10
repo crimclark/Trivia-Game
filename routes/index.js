@@ -150,7 +150,12 @@ router.put('/user', (req, res, next) => {
 router.put('/scores', (req, res, next) => {
   console.log('winner is', req.body.winner);
   console.log('loser is', req.body.loser);
-  res.send('put the scores');
+  var loser = req.body.loser;
+  var winner = req.body.winner;
+
+  Profile.update({_id: winner.mongoId}, {$inc: {score: { gamesWon: 1}}}, (err, results)=>{
+    res.send(results);
+  })
 });
 
 // Delete

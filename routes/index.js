@@ -11,9 +11,8 @@ router.get('/', (req, res, next) => {
     res.render('index', {title: 'triviaGame'});
   } else {
     const user = JSON.stringify(req.session.user);
-    console.log('req.params ', req.params);
-    console.log('req.query ', req.query);
-    res.render('new', {title: 'newGame'});
+
+    res.render('new', {title: 'newGame', avatar: req.session.user.image.url});
   }
 });
 
@@ -63,7 +62,7 @@ router.get('/game/:id', (req, res, next) => {
           });
           gameRoom.save();
           getUsername(req.session.user.id, function(name){
-            res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl, name: name, category: cat, playerMode: req.query.playerMode});
+            res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl, name: name, category: cat, playerMode: req.query.playerMode, avatar: req.session.user.image.url});
           })
           });
         });
@@ -72,7 +71,7 @@ router.get('/game/:id', (req, res, next) => {
         gameRooms.find({url: fullUrl}, function(err, results) {
           var formatted_results = results[0].firstQuestion[0];
           getUsername(req.session.user.id, function(name){
-            res.render('game', {question: formatted_results.question, answers: formatted_results.answers, name: name, category: cat});
+            res.render('game', {question: formatted_results.question, answers: formatted_results.answers, name: name, category: cat, avatar: req.session.user.image.url});
           })
         });
       }
@@ -106,27 +105,20 @@ router.get('/question', (req, res, next) => {
 router.get('/user', (req, res, next) => {
   var userId = req.session.user.id;
   Profile.findOne({_id: userId}, (err, userData) => {
-    res.render('profile', {title: 'playerProfile', info: userData});
+    res.render('profile', {title: 'playerProfile', info: userData, avatar: req.session.user.image.url});
   });
 });
 
 router.get('/browse', (req, res, next) => {
   Profile.find({}, (err, allData) => {
-    res.render('browse',  { title: 'browseProfiles', profile: allData });
+    res.render('browse',  { title: 'browseProfiles', profile: allData, avatar: req.session.user.image.url});
   });
 });
 
 router.get('/user/:id', (req, res, next) => {
   var userId = req.params.id;
   Profile.findOne({_id: userId}, (err, userData) => {
-    res.render('pubProfData', {title: 'playerProfile', info: userData});
-  });
-});
-
-
-router.get('/browse', (req, res, next) => {
-  Profile.find({}, (err, allData) => {
-    res.render('browse',  { title: 'browseProfiles', profile: allData });
+    res.render('pubProfData', {title: 'playerProfile', info: userData, avatar: req.session.user.image.url });
   });
 });
 

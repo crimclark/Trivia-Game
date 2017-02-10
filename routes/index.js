@@ -112,7 +112,7 @@ router.get('/user', (req, res, next) => {
 
 router.get('/browse', (req, res, next) => {
   Profile.find({}, (err, allData) => {
-    res.render('browse',  { title: 'Browse Profiles', profile: allData });
+    res.render('browse',  { title: 'browseProfiles', profile: allData });
   });
 });
 

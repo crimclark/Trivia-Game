@@ -21,7 +21,8 @@ router.get('/new', (req, res, next) => {
 });
 
 router.get('/question', (req, res, next) => {
-  getQuestion(function(data, question) {
+  var cat = req.query.category
+  getQuestion(cat, function(data, question) {
     answerShuffle.answerShuffle(data, function(shuffleData) {
       res.send({question: question, answers: shuffleData});
     });
@@ -35,26 +36,28 @@ function getUsername(id, callback) {
 }
 
 router.get('/game/:id', (req, res, next) => {
+  var cat = req.query.category
   var fullUrl = '/game/' + req.params.id;
   gameRooms.find({url: fullUrl }, function(err, results) {
     if (err) {
       console.log(err);
     }
     if (results.length === 0) {
-      getQuestion('query here', function(data, question) {
+      getQuestion(cat, function(data, question) {
         answerShuffle.answerShuffle(data, function(shuffleData) {
           var gameRoom = new gameRooms({
             url: fullUrl,
             activeUsers: 1,
             firstQuestion: {
               question: question,
-              answers: shuffleData
+              answers: shuffleData,
+              category: cat
             },
           });
           gameRoom.save();
           getUsername(req.session.user.id, function(name){
             console.log('name is ' + name);
-            res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl, name: name});
+            res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl, name: name, category: cat});
           })
           });
         });
@@ -62,7 +65,7 @@ router.get('/game/:id', (req, res, next) => {
       else if(results) {
         gameRooms.find({url: fullUrl}, function(err, results) {
           var formatted_results = results[0].firstQuestion[0];
-          res.render('game', {question: formatted_results.question, answers: formatted_results.answers, name: "Guest"});
+          res.render('game', {question: formatted_results.question, answers: formatted_results.answers, name: "Guest", category: cat});
         });
       }
     });

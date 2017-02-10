@@ -44,6 +44,12 @@ img.icon {
   width: 1.7em;
   height: 1.7em;
 }
+#categories {
+  margin-bottom: 1em;
+}
+.game-btn {
+  display: block;
+}
 .mc-list {
   list-style: none;
 }

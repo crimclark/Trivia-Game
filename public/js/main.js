@@ -27,7 +27,6 @@ var counter = $('.counter').text()
 function addToCounter() {
   counter++
   $('.counter').text(counter);
-
   if (counter === 11) {
     html = '<div class="container scoreboard"><h1>GAME OVER</h1><h3>*USER* WINS</h3><h5>User1 Score: ##</h5><h5>User2 Score: ##</h5></div>';
     $('.container').html(html);
@@ -105,6 +104,11 @@ $('body').on('click', '.incorrect', function() {
 })
 //ROOM URL PSEUDOCODE
 $startBtn.on('click', function(){
+  // user selects a category from dropdown menu
+  // on start button click, grab the value of selected category option
+  // ajax request to send the category to server '/game'
+
+
   var randURL = '/game/'
   randURL += randWord()
  $('form').attr('action', `${randURL}`);

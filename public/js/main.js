@@ -28,9 +28,19 @@ var player = {
   score: 0
 }
 
+function removeEventListeners() {
+  $('body').off('click', '.correct', correctAnswer);
+  $('body').off('click', '.incorrect', incorrectAnswer);
+}
+
+function addEventListeners() {
+  $('body').on('click', '.correct', correctAnswer);
+  $('body').on('click', '.incorrect', incorrectAnswer);
+}
+
 var counter = $('.counter').text()
 function addToCounter() {
-  counter++
+  counter++;
   $('.counter').text(counter);
   if (counter === 11) {
     $.ajax({
@@ -73,6 +83,7 @@ function renderHtml(question) {
   $('#mc').html(html);
   // Counter
   addToCounter();
+  addEventListeners();
 }
 
 function getQuestion(answer) {
@@ -98,11 +109,15 @@ socket.on('get question', function(question){
 })
 
 // CORRECT ANSWER CLICK
-$('body').on('click', '.correct', function(event) {
+
+function correctAnswer() {
+  removeEventListeners();
   var answerText = $(this).text();
-  playerScore ++;
+  playerScore++;
   getQuestion(answerText);
-});
+}
+
+$('body').on('click', '.correct', correctAnswer);
 
 socket.on('correct click', function(data) {
   $('li').each( function(el) {
@@ -117,11 +132,18 @@ socket.on('correct click', function(data) {
 });
 
 // WRONG ANSWER CLICK
-$('body').on('click', '.incorrect', function(event) {
-  // console.log($(this).text());
+
+function incorrectAnswer() {
+  removeEventListeners();
   var answerText = $(this).text();
   socket.emit('incorrect click', answerText);
-});
+  if ($('.red').length === 1) {
+    getQuestionTie();
+  }
+}
+
+$('body').on('click', '.incorrect', incorrectAnswer)
+
 
 socket.on('incorrect click', function(data) {
   // console.log(data);
@@ -132,11 +154,6 @@ socket.on('incorrect click', function(data) {
   })
 });
 
-$('body').on('click', '.incorrect', function() {
-  if ($('.red').length === 1) {
-    getQuestionTie();
-  }
-})
 
 
 socket.on('get score', function(score){

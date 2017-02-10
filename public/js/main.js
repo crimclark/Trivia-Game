@@ -5,6 +5,8 @@ var $correct = $('.correct');
 var $incorrect = $('.incorrect');
 var userName = $('#username').val();
 var $playerMode = $('#gameMode').text();
+var $tekken = $('#tekken');
+
 console.log(userName);
 
 

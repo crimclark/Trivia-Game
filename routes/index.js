@@ -52,30 +52,24 @@ router.get('/game/:id', (req, res, next) => {
             },
           });
           gameRoom.save();
-            getUsername(req.session.user.id, function(name){
-              console.log('name is ' + name);
-              res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl, name: name});
-            })
+          getUsername(req.session.user.id, function(name){
+            console.log('name is ' + name);
+            res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl, name: name});
+          })
           });
         });
       }
       else if(results) {
         gameRooms.find({url: fullUrl}, function(err, results) {
           var formatted_results = results[0].firstQuestion[0];
-          getUsername(req.session.user.id, function(name){
-            console.log('name is ' + name);
           if (req.session.user.id) {
-              getUsername(req.session.user.id, function(name){
-                console.log('name is ' + name);
-                res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl, name: name});
+            getUsername(req.session.user.id, function(name){
+              console.log('name is ' + name);
+              res.render('game', {question: formatted_results.question, answers: formatted_results.answers, name: name});
             })
           } else {
-            res.render('game', {question: formatted_results.question, answers: formatted_results.answers, name: "guest"});
-
+            res.render('game', {question: formatted_results.question, answers: formatted_results.answers, name: "Guest"});
           }
-
-
-          })
         });
       }
     });

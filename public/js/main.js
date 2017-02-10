@@ -4,7 +4,9 @@ var $joinBtn = $('#joinBtn');
 var $correct = $('.correct');
 var $incorrect = $('.incorrect');
 var userName = $('#username').val();
+var $playerMode = $('#gameMode').text();
 console.log(userName);
+
 
 var room = window.location.pathname;
 
@@ -39,8 +41,8 @@ function addToCounter() {
     $.ajax({
       url: $('#gameUrl').text(),
       type: 'delete',
-    })
-    socket.emit('score card')
+    });
+    socket.emit('score card');
   }
 }
 
@@ -70,15 +72,15 @@ function renderHtml(question) {
   }
   $('#mc').html(html);
   // Counter
-  addToCounter();
-  addEventListeners();
+    addToCounter();
+    addEventListeners();
 }
 
 function getQuestion(emitTo, answer) {
   var cat = $('#category').text()
   $.get(`/question?category=${cat}`, function(question) {
     socket.emit(emitTo, {question: question, answer: answer});
-  })
+  });
 }
 
 socket.on('get question', function(question){
@@ -88,7 +90,7 @@ socket.on('get question', function(question){
 // CORRECT ANSWER CLICK
 
 function correctAnswer() {
-  removeEventListeners();
+    removeEventListeners();
   var answerText = $(this).text();
   getQuestion('correct click', answerText);
 }
@@ -107,14 +109,19 @@ socket.on('correct click', function(data) {
 });
 
 // WRONG ANSWER CLICK
-
 function incorrectAnswer() {
-  removeEventListeners();
+    removeEventListeners();
   var answerText = $(this).text();
   socket.emit('incorrect click', answerText);
-  if ($('.red').length === 1) {
-    getQuestion('get question', answerText);
-  }
+  if($playerMode === 'Single Player') {
+    if ($('.red').length === 0) {
+      getQuestion('get question', answerText);
+    }
+  } else {
+      if ($('.red').length === 1) {
+        getQuestion('get question', answerText);
+      }
+    }
 }
 
 $('body').on('click', '.incorrect', incorrectAnswer)

@@ -53,7 +53,7 @@ router.get('/game/:id', (req, res, next) => {
           });
           gameRoom.save();
           getUsername(req.session.user.id, function(name){
-            console.log(name)
+            console.log('name is ' + name);
             res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl, name: name});
           })
           });
@@ -62,7 +62,10 @@ router.get('/game/:id', (req, res, next) => {
       else if(results) {
         gameRooms.find({url: fullUrl}, function(err, results) {
           var formatted_results = results[0].firstQuestion[0];
-         res.render('game', {question: formatted_results.question, answers: formatted_results.answers});
+          getUsername(req.session.user.id, function(name){
+            console.log('name is ' + name);
+            res.render('game', {question: formatted_results.question, answers: formatted_results.answers, name: name});
+          })
         });
       }
     });

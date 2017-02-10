@@ -36,6 +36,10 @@ function getUsername(id, callback) {
 }
 
 router.get('/game/:id', (req, res, next) => {
+   if (!req.session.user) {
+    res.redirect('/')
+   }
+   else {
   var cat = req.query.category
   var fullUrl = '/game/' + req.params.id;
   gameRooms.find({url: fullUrl }, function(err, results) {
@@ -69,6 +73,7 @@ router.get('/game/:id', (req, res, next) => {
         });
       }
     });
+}
 });
 
 // Read

@@ -6,7 +6,6 @@ function sockets(io) {
     console.log('a user connected');
 
     socket.on('room', function(data) {
-      // console.log("**data** ", data);
       var roomName = data.room;
 
       socket.join(roomName);
@@ -23,7 +22,6 @@ function sockets(io) {
           for (var id in player) {
             if (player[id] === socket.id) {
               player.score += 1;
-              console.log("**player** ", player);
               currentPlayer = player;
               io.sockets.connected[socket.id].emit('get score', currentPlayer.score);
             }
@@ -38,6 +36,20 @@ function sockets(io) {
 
       socket.on('get question', function(question){
         io.to(roomName).emit('get question', question);
+      })
+
+      socket.on('score card', function(){
+
+        var currentPlayers = [];
+
+        players.forEach (function(player) {
+          for (var room in player) {
+            if (player[room] === roomName) {
+              currentPlayers.push(player);
+            }
+          }
+        })
+        io.to(roomName).emit('score card', currentPlayers)
       })
     })
   })

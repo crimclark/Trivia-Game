@@ -10,27 +10,15 @@ router.get('/', (req, res, next) => {
   if (!req.session.user) {
     res.render('index', {title: 'Trivia Wars'});
   } else {
-    const user = JSON.stringify(req.session.user);
-    console.log('req.params ', req.params);
-    console.log('req.query ', req.query);
-
-    res.render('new', {title: 'Trivia Wars'});
-
-  }
+      const user = JSON.stringify(req.session.user);
+      res.render('new', {title: 'New Game'});
+    }
 });
 
+// Create
 router.get('/new', (req, res, next) => {
   res.render('new', {title: 'Trivia Wars'});
 });
-
-router.post('/', (req, res, next) => {
-  const user = JSON.stringify(req.session.user);
-    console.log('req.params ', req.params);
-    console.log('req.query ', req.query);
-    console.log('req.body.value: ', req.body.value);
-
-    res.render('new', {title: 'New Game'});
-})
 
 router.get('/question', (req, res, next) => {
   var cat = req.query.category
@@ -41,10 +29,15 @@ router.get('/question', (req, res, next) => {
   });
 });
 
+function getUsername(id, callback) {
+  Profile.findById(id, function(err, results){
+    callback(results.name);
+  })
+}
+
 router.get('/game/:id', (req, res, next) => {
   var cat = req.query.category
   var fullUrl = '/game/' + req.params.id;
-  // test /game/XIttXxHc
   gameRooms.find({url: fullUrl }, function(err, results) {
     if (err) {
       console.log(err);
@@ -62,19 +55,26 @@ router.get('/game/:id', (req, res, next) => {
             },
           });
           gameRoom.save();
-          res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl, category: cat});
+          getUsername(req.session.user.id, function(name){
+            console.log('name is ' + name);
+            res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl, name: name, category: cat});
+          })
           });
         });
       }
       else if(results) {
         gameRooms.find({url: fullUrl}, function(err, results) {
           var formatted_results = results[0].firstQuestion[0];
-         res.render('game', {question: formatted_results.question, answers: formatted_results.answers, category: cat});
+          res.render('game', {question: formatted_results.question, answers: formatted_results.answers, name: "Guest", category: cat});
         });
       }
     });
 });
 
+// Read
+router.get('/new', (req, res, next) => {
+  res.render('new', {title: 'New Game'});
+});
 
 router.get('/join', (req, res, next) => {
   gameRooms.find({activeUsers: 1}, (err, allRooms) => {
@@ -86,12 +86,11 @@ router.get('/join', (req, res, next) => {
   });
 });
 
-router.delete('/game/:id', (req, res, next) => {
-  var fullUrl = '/game/' + req.params.id;
-  gameRooms.findOneAndRemove({url: fullUrl}, function(err) {
-    if (err) {
-      console.log(err);
-    }
+router.get('/question', (req, res, next) => {
+  getQuestion(function(data, question) {
+    answerShuffle.answerShuffle(data, function(shuffleData) {
+      res.send({question: question, answers: shuffleData});
+    });
   });
 });
 
@@ -102,16 +101,9 @@ router.get('/user', (req, res, next) => {
   });
 });
 
-router.get('/user.json', (req, res, next) => {
-  Profile.find({}, 'name avatar score.gamesWon score.gamesPlayed', function(err, userData) {
-    res.send(userData);
-  });
-});
-
-router.post('/user', (req, res, next) => {
-  var userId = req.session.user.id;
-  Profile.update({_id: userId}, { $set: { name: req.body.newName }},(err, userData) => {
-  res.redirect('/user');
+router.get('/browse', (req, res, next) => {
+  Profile.find({}, (err, allData) => {
+    res.render('browse',  { title: 'Browse Profiles', profile: allData });
   });
 });
 
@@ -122,14 +114,32 @@ router.get('/user/:id', (req, res, next) => {
   });
 });
 
-router.get('/browse', (req, res, next) => {
-  Profile.find({}, (err, allData) => {
-    res.render('browse',  { title: 'Browse Profiles', profile: allData });
+router.get('/user.json', (req, res, next) => {
+  Profile.find({}, 'name avatar score.gamesWon score.gamesPlayed', function(err, userData) {
+    res.send(userData);
   });
 });
 
-router.get('/test', (req, res, next) => {
-  res.render('test');
+// Update
+router.put('/user', (req, res, next) => {
+  console.log('I am the PUT Justin!!!!! ' + req.body.newName);
+  console.log(req.body);
+  var userId = req.session.user.id;
+  console.log(userId);
+  Profile.update({_id: userId}, { $set: { name: req.body.newName }},(err, userData) => {
+  res.redirect('/user');
+  });
+});
+
+// Delete
+router.delete('/game/:id', (req, res, next) => {
+  var fullUrl = '/game/' + req.params.id;
+  gameRooms.findOneAndRemove({url: fullUrl}, function(err) {
+    if (err) {
+      console.log(err);
+    }
+    console.log(`The gameroom ${fullUrl} has been deleted!!!`);
+  });
 });
 
 module.exports = router

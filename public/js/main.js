@@ -3,6 +3,8 @@ var $startBtn = $('#startBtn');
 var $joinBtn = $('#joinBtn');
 var $correct = $('.correct');
 var $incorrect = $('.incorrect');
+var userName = $('#username').val();
+console.log(userName);
 
 var room = window.location.pathname;
 
@@ -12,6 +14,7 @@ socket.on('connect', function() {
   console.log('client connected');
   var player = {
     id: socket.id,
+    name: userName,
     score: 0,
     room: room
   }
@@ -30,14 +33,30 @@ function addToCounter() {
   counter++
   $('.counter').text(counter);
   if (counter === 11) {
-    html = '<div class="container scoreboard"><h1>GAME OVER</h1><h3>*USER* WINS</h3><h5>User1 Score: ##</h5><h5>User2 Score: ##</h5></div>';
-    $('.container').html(html);
     $.ajax({
       url: $('#gameUrl').text(),
       type: 'delete',
     })
+    socket.emit('score card')
   }
 }
+
+socket.on('score card', function(players){
+
+  players.sort(function(a, b){
+    return b.score - a.score;
+  })
+
+  html = '<div class="container scoreboard"><h1>GAME OVER</h1><h3>' + players[0].name + ' WINS</h3>';
+
+  for (var i = 0; i < players.length; i++) {
+    html += '<h5>' + players[i].name + ' Score: ' + players[i].score + '</h5>';
+  }
+
+  html += '</div>';
+  // html = '<div class="container scoreboard"><h1>GAME OVER</h1><h3>*USER* WINS</h3><h5>User1 Score: ##</h5><h5>User2 Score: ##</h5></div>';
+  $('.container').html(html);
+})
 
 function renderHtml(question) {
   var $question = $('.question');
@@ -77,14 +96,6 @@ function getQuestionTie() {
 socket.on('get question', function(question){
   renderHtml(question);
 })
-
-// function getQuestiontie(answer) {
-//   $.get('/question', function(question) {
-//     socket.emit('correct click', {question: question, answer: answer, score: playerScore});
-//     console.log(playerScore);
-//     console.log(socket.id);
-//   })
-// }
 
 // CORRECT ANSWER CLICK
 $('body').on('click', '.correct', function(event) {
@@ -147,18 +158,25 @@ $startBtn.on('click', function(){
 
 //Profile Update rendering
 var $profEdit = $('.profileEdit');
-var $profEditFormBtn = $('.profileEdit>button');
+var $profEditDivBtn = $('.profileEdit>button');
 var $profEditLink = $('#profEditLink');
 var $profUserNameEdit = $('#profUserNameEdit');
+var $input = $('.profileEdit>input');
+
 
 $profEditLink.on('click', function(evt){
   $profEdit.css('display', 'inline');
   $profUserNameEdit.css('display', 'none');
 });
 
-$profEditFormBtn.on('click', function(evt){
+$profEditDivBtn.on('click', function(evt){
   $profEdit.css('display', 'none');
   $profUserNameEdit.css('display', 'inline');
+  $.ajax({
+    url: '/user',
+    method: 'PUT',
+    data: {newName: $input.val()}
+  });
 });
 
 

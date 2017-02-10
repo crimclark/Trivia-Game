@@ -40,6 +40,12 @@ router.get('/question', (req, res, next) => {
   });
 });
 
+function getUsername(id, callback) {
+  Profile.findById(id, function(err, results){
+    callback(results.name);
+  })
+}
+
 router.get('/game/:id', (req, res, next) => {
   var fullUrl = '/game/' + req.params.id;
   // test /game/XIttXxHc
@@ -59,14 +65,17 @@ router.get('/game/:id', (req, res, next) => {
             },
           });
           gameRoom.save();
-          res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl});
+          getUsername(req.session.user.id, function(name){
+            console.log('name is ' + name);
+            res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl, name: name});
+          })
           });
         });
       }
       else if(results) {
         gameRooms.find({url: fullUrl}, function(err, results) {
           var formatted_results = results[0].firstQuestion[0];
-         res.render('game', {question: formatted_results.question, answers: formatted_results.answers});
+          res.render('game', {question: formatted_results.question, answers: formatted_results.answers, name: "Guest"});
         });
       }
     });

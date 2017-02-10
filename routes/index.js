@@ -84,7 +84,7 @@ router.get('/new', (req, res, next) => {
 router.get('/join', (req, res, next) => {
   gameRooms.find({activeUsers: 1, gameMode: 'Multiplayer'}, (err, allRooms) => {
     if(allRooms.length === 0){
-      res.render('new', {title: 'New Game', noGameAlert: 'There are no game rooms availabe to join!'});
+      res.render('new', {title: 'New Game', noGameAlert: 'There are no game rooms availabe to join!', avatar: req.session.user.image.url});
     } else {
         var rand = Math.floor(Math.random() * allRooms.length);
         var joinUrl = allRooms[rand].url;

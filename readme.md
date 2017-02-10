@@ -28,20 +28,21 @@ Technologies Used:
 - Socket.io
 - Mongoose
 - Ajax
-- JQuery
-- Cascading Style Sheets
-- Html
+- jQuery
+- HTML
+- CSS
+- JavaScript
 - Handlebars
 - Mongo
 - Express
 - Node.js
-- Google API
-- Skeleton CSS
-- JavaScript
-- Trivia API (opentdb)
+- [Google API](https://console.developers.google.com/apis/library)
+- [Open Trivia DB API](https://opentdb.com/api_config.php)
+- [Skeleton CSS](http://getskeleton.com/)
 - Git
-- Github
+- [GitHub](https://github.com/WDI-DTLA-41-Group-3/Trivia-Game)
 - Heroku
+- [Project Board](https://github.com/WDI-DTLA-41-Group-3/Trivia-Game/projects/2)
 
 
 User Stories & App Features: 

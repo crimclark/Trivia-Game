@@ -62,14 +62,10 @@ router.get('/game/:id', (req, res, next) => {
       else if(results) {
         gameRooms.find({url: fullUrl}, function(err, results) {
           var formatted_results = results[0].firstQuestion[0];
-          if (req.session) {
             getUsername(req.session.user.id, function(name){
               console.log('name is ' + name);
-              res.render('game', {question: formatted_results.question, answers: formatted_results.answers, name: name});
+              res.render('game', {question: formatted_results.question, answers: formatted_results.answers, name: "Guest"});
             })
-          } else {
-            res.render('game', {question: formatted_results.question, answers: formatted_results.answers, name: "Guest"});
-          }
         });
       }
     });

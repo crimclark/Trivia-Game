@@ -155,7 +155,7 @@ $startBtn.on('click', function(){
 var $profEdit = $('.profileEdit');
 var $profEditFormBtn = $('.profileEdit>button');
 var $profEditLink = $('#profEditLink');
-var $profUserNameEdit = $('#profUserNameEdit');
+var $profUserNameEdit = $('#profUserNameEdit')
 
 $profEditLink.on('click', function(evt){
   $profEdit.css('display', 'inline');

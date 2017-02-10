@@ -2,14 +2,33 @@ body {
   margin-top: 4%;
   font-size: 18px;
 }
+.login-div {
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+}
+.login-logo {
+  height: 6em;
+}
+.login-title {
+  margin-bottom: 1em;
+}
+.btn-text {
+  width: 60%;
+  overflow: hidden;
+  white-space: wrap;
+  margin: 1em;
+  /*text-overflow: ellipsis;*/
+}
 .container {
   margin-top: 8em;
 }
 nav {
-  /*border-bottom: .8px solid #E0E0E0;*/
   background-color: #E0F2F1;
+  opacity: 1;
   height: 2.4em;
   top: 0;
+  z-index: 100;
   position: fixed;
   width: 100%;
 }
@@ -39,6 +58,27 @@ img.avatar {
   -moz-border-radius: 50%;
   border-radius: 50%;
 }
+.prof-avatar {
+  display: inline-block;
+  width: 1.7em;
+  height: 1.7em;
+  margin-right: 1em;
+  /*margin-right: .6em;*/
+  /*position: relative;*/
+  /*-webkit-border-radius: 50%;*/
+  /*-moz-border-radius: 50%;*/
+  border-radius: 50%;
+  float: left;
+}
+p.prof-name {
+  display: inline-block;
+}
+a.prof-name {
+  padding-top: 0;
+  line-height: 2;
+  text-decoration: none;
+  color: #4DB6AC;
+}
 img.icon {
   display: inline;
   width: 1.7em;
@@ -47,8 +87,12 @@ img.icon {
 #categories {
   margin-bottom: 1em;
 }
-.game-btn {
-  display: block;
+/*.game-btn {
+  display: inline-block;
+}*/
+.select-cat {
+  font-size: 1em;
+  color: silver;
 }
 .mc-list {
   list-style: none;

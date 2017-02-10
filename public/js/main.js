@@ -5,7 +5,9 @@ var $correct = $('.correct');
 var $incorrect = $('.incorrect');
 var userName = $('#username').val();
 var $playerMode = $('#gameMode').text();
+
 var mongoId = $('#mongoId').text();
+
 console.log(userName);
 
 var room = window.location.pathname;

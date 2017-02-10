@@ -8,16 +8,29 @@ const gameRooms = require('../models/gameRooms.js');
 
 router.get('/', (req, res, next) => {
   if (!req.session.user) {
-    res.render('index', {title: 'Login Page'});
+    res.render('index', {title: 'Trivia Wars'});
   } else {
     const user = JSON.stringify(req.session.user);
-    res.render('new', {title: 'New Game'});
+    console.log('req.params ', req.params);
+    console.log('req.query ', req.query);
+
+    res.render('new', {title: 'Trivia Wars'});
+
   }
 });
 
 router.get('/new', (req, res, next) => {
-  res.render('new', {title: 'New Game'});
+  res.render('new', {title: 'Trivia Wars'});
 });
+
+router.post('/', (req, res, next) => {
+  const user = JSON.stringify(req.session.user);
+    console.log('req.params ', req.params);
+    console.log('req.query ', req.query);
+    console.log('req.body.value: ', req.body.value);
+
+    res.render('new', {title: 'New Game'});
+})
 
 router.get('/question', (req, res, next) => {
   getQuestion(function(data, question) {
@@ -35,7 +48,7 @@ router.get('/game/:id', (req, res, next) => {
       console.log(err);
     }
     if (results.length === 0) {
-      getQuestion(function(data, question) {
+      getQuestion('query here', function(data, question) {
         answerShuffle.answerShuffle(data, function(shuffleData) {
           var gameRoom = new gameRooms({
             url: fullUrl,

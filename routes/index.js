@@ -8,7 +8,7 @@ const gameRooms = require('../models/gameRooms.js');
 
 router.get('/', (req, res, next) => {
   if (!req.session.user) {
-    res.render('index', {title: 'trivia | group-3'});
+    res.render('index', {title: 'triviaGame'});
   } else {
     const user = JSON.stringify(req.session.user);
     console.log('req.params ', req.params);

@@ -2,6 +2,24 @@ body {
   margin-top: 4%;
   font-size: 18px;
 }
+.login-div {
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+}
+.login-logo {
+  height: 6em;
+}
+.login-title {
+  margin-bottom: 1em;
+}
+.btn-text {
+  width: 60%;
+  overflow: hidden;
+  white-space: wrap;
+  margin: 1em;
+  /*text-overflow: ellipsis;*/
+}
 .container {
   margin-top: 8em;
 }
@@ -69,8 +87,12 @@ img.icon {
 #categories {
   margin-bottom: 1em;
 }
-.game-btn {
-  display: block;
+/*.game-btn {
+  display: inline-block;
+}*/
+.select-cat {
+  font-size: 1em;
+  color: silver;
 }
 .mc-list {
   list-style: none;

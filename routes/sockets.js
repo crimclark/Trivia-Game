@@ -34,8 +34,8 @@ function sockets(io) {
         io.to(roomName).emit('incorrect click', data);
       })
 
-      socket.on('get question', function(question){
-        io.to(roomName).emit('get question', question);
+      socket.on('get question', function(data){
+        io.to(roomName).emit('get question', data.question);
       })
 
       socket.on('score card', function(){

@@ -18,7 +18,6 @@
       <option value="21">Sports</option>
     </select>
     <select id="playerMode" name="playerMode" required>
-      <option value="selectOne"><span class="select-cat">Player Mode:</span></option>
       <option value="Single Player">Single Player</option>
       <option value="Multiplayer">Multiplayer</option>
     </select>
@@ -32,5 +31,5 @@
   <form method="GET" action="/join">
     <button class="game-btn button" id='joinBtn'>Join</button>
   </form>
-
+  {{ noGameAlert }}
 </div>

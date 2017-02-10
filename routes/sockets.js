@@ -46,6 +46,8 @@ function sockets(io) {
           for (var room in player) {
             if (player[room] === roomName) {
               currentPlayers.push(player);
+              var i = players.indexOf(player);
+              players.splice(i, 1);
             }
           }
         })
@@ -62,11 +64,21 @@ function sockets(io) {
           io.sockets.connected[loser.id].emit('score card loser', {winner: winner, loser: loser});
         }
 
+
+
         // io.to(roomName).emit('score card', currentPlayers)
       })
 
       socket.on('disconnect', function(){
         console.log('disconnected. total connections in ' + roomName + ': ' + room.length);
+        players.forEach (function(player) {
+          for (var id in player) {
+            if (player[id] === socket.id) {
+              var i = players.indexOf(player);
+              players.splice(i, 1);
+            }
+          }
+        })
       })
     })
   })

@@ -5,8 +5,8 @@ var $correct = $('.correct');
 var $incorrect = $('.incorrect');
 var userName = $('#username').val();
 var $playerMode = $('#gameMode').text();
+var mongoId = $('#mongoId').text();
 console.log(userName);
-
 
 var room = window.location.pathname;
 
@@ -18,7 +18,8 @@ socket.on('connect', function() {
     id: socket.id,
     name: userName,
     score: 0,
-    room: room
+    room: room,
+    mongoId: mongoId
   }
   socket.emit('room', {room: room, player: player});
 });
@@ -46,17 +47,48 @@ function addToCounter() {
   }
 }
 
-socket.on('score card', function(players){
+function getWinner(players) {
   players.sort(function(a, b){
     return b.score - a.score;
   })
-  html = '<div class="container scoreboard"><h1>GAME OVER</h1><h3>' + players[0].name + ' WINS</h3>';
-  for (var i = 0; i < players.length; i++) {
-    html += '<h5>' + players[i].name + ' Score: ' + players[i].score + '</h5>';
+  return players[0];
+}
+
+socket.once('score card winner', function(players){
+  var winner = players.winner;
+  var loser = players.loser;
+  if ($playerMode === 'Multiplayer') {
+    html = '<div class="container scoreboard"><h1>GAME OVER</h1><h3>YOU WIN</h3>';
+    html += '<h5>' + winner.name + ' Score: ' + winner.score + '</h5><h5>' +
+            loser.name + ' Score: ' + loser.score + '</h5></div>'
+    $('.container').html(html);
+    if (players.winner.id === socket.id) {
+      console.log('sent put request');
+      putScores(winner, loser);
+    }
+  } else {
+    html = '<div class="container scoreboard"><h1>GAME RESULTS</h1><h5> Your Score: ' + winner.score + '</h5>';
+    $('.container').html(html);
   }
-  html += '</div>';
+})
+
+socket.once('score card loser', function(players){
+  var winner = players.winner;
+  var loser = players.loser;
+  html = '<div class="container scoreboard"><h1>GAME OVER</h1><h3>YOU LOSE</h3>';
+  html += '<h5>' + winner.name + ' Score: ' + winner.score + '</h5><h5>' +
+          loser.name + ' Score: ' + loser.score + '</h5></div>'
   $('.container').html(html);
 })
+
+
+function putScores(winner, loser) {
+  $.ajax({
+    url: '/scores',
+    method: 'put',
+    data: {winner: winner, loser: loser}
+  })
+}
 
 function renderHtml(question) {
   var $question = $('.question');
@@ -74,6 +106,7 @@ function renderHtml(question) {
   // Counter
     addToCounter();
     addEventListeners();
+  console.log($playerMode);
 }
 
 function getQuestion(emitTo, answer) {
@@ -90,7 +123,6 @@ socket.on('get question', function(question){
 // CORRECT ANSWER CLICK
 
 function correctAnswer() {
-    removeEventListeners();
   var answerText = $(this).text();
   getQuestion('correct click', answerText);
 }
@@ -98,6 +130,7 @@ function correctAnswer() {
 $('body').on('click', '.correct', correctAnswer);
 
 socket.on('correct click', function(data) {
+  removeEventListeners();
   $('li').each( function(el) {
     if ($(this).text() === data.answer) {
       $(this).children().addClass('green');
@@ -110,7 +143,7 @@ socket.on('correct click', function(data) {
 
 // WRONG ANSWER CLICK
 function incorrectAnswer() {
-    removeEventListeners();
+  removeEventListeners();
   var answerText = $(this).text();
   socket.emit('incorrect click', answerText);
   if($playerMode === 'Single Player') {

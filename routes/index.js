@@ -52,7 +52,7 @@ router.get('/game/:id', (req, res, next) => {
             },
           });
           gameRoom.save();
-          if (req.session.use.id) {
+          if (req.session.user.id) {
             getUsername(req.session.user.id, function(name){
               console.log('name is ' + name);
               res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl, name: name});

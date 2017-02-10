@@ -72,12 +72,8 @@ function renderHtml(question) {
   }
   $('#mc').html(html);
   // Counter
-  if($playerMode === 'Multiplayer'){
     addToCounter();
     addEventListeners();
-  } else {
-      addToCounter();
-    }
 }
 
 function getQuestion(emitTo, answer) {
@@ -94,9 +90,7 @@ socket.on('get question', function(question){
 // CORRECT ANSWER CLICK
 
 function correctAnswer() {
-  if($playerMode === 'Multiplayer'){
     removeEventListeners();
-  }
   var answerText = $(this).text();
   getQuestion('correct click', answerText);
 }
@@ -116,9 +110,7 @@ socket.on('correct click', function(data) {
 
 // WRONG ANSWER CLICK
 function incorrectAnswer() {
-  if($playerMode === 'Multiplayer'){
     removeEventListeners();
-  }
   var answerText = $(this).text();
   socket.emit('incorrect click', answerText);
   if($playerMode === 'Single Player') {

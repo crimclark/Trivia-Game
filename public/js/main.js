@@ -4,6 +4,7 @@ var $joinBtn = $('#joinBtn');
 var $correct = $('.correct');
 var $incorrect = $('.incorrect');
 var userName = $('#username').val();
+var $playerMode;
 console.log(userName);
 
 var room = window.location.pathname;
@@ -70,8 +71,14 @@ function renderHtml(question) {
   }
   $('#mc').html(html);
   // Counter
-  addToCounter();
-  addEventListeners();
+  // if($playerMode === 'Multiplayer'){
+  //   addToCounter();
+  //   addEventListeners();
+  // } else {
+  //     addToCounter();
+  //   }
+      addToCounter();
+    addEventListeners();
 }
 
 function getQuestion(emitTo, answer) {
@@ -88,7 +95,11 @@ socket.on('get question', function(question){
 // CORRECT ANSWER CLICK
 
 function correctAnswer() {
-  removeEventListeners();
+  // if($playerMode === 'Multiplayer'){
+  //   removeEventListeners();
+  // }
+      removeEventListeners();
+
   var answerText = $(this).text();
   getQuestion('correct click', answerText);
 }
@@ -107,9 +118,13 @@ socket.on('correct click', function(data) {
 });
 
 // WRONG ANSWER CLICK
-
 function incorrectAnswer() {
-  removeEventListeners();
+  console.log('I am the real playerMode: ' + `${$playerMode}`)
+  if($playerMode === 'Multiplayer'){
+    removeEventListeners();
+  }
+      // removeEventListeners();
+
   var answerText = $(this).text();
   socket.emit('incorrect click', answerText);
   if ($('.red').length === 1) {
@@ -137,7 +152,6 @@ $startBtn.on('click', function(){
   // on start button click, grab the value of selected category option
   // ajax request to send the category to server '/game'
   var cat = $('select').val()
-
   if(cat != 'selectOne') {
     var randURL = '/game/'
     randURL += randWord()

@@ -6,6 +6,8 @@ var $incorrect = $('.incorrect');
 
 var room = window.location.pathname;
 
+var startBtn = $('#start-btn');
+
 socket.on('connect', function() {
   console.log('client connected');
   var player = {
@@ -63,6 +65,26 @@ function getQuestion(answer) {
   })
 }
 
+function getQuestionTie() {
+  $.get('/question', function(question) {
+    socket.emit('get question', question);
+    console.log(playerScore);
+    console.log(socket.id);
+  })
+}
+
+socket.on('get question', function(question){
+  renderHtml(question);
+})
+
+// function getQuestiontie(answer) {
+//   $.get('/question', function(question) {
+//     socket.emit('correct click', {question: question, answer: answer, score: playerScore});
+//     console.log(playerScore);
+//     console.log(socket.id);
+//   })
+// }
+
 // CORRECT ANSWER CLICK
 $('body').on('click', '.correct', function(event) {
   var answerText = $(this).text();
@@ -100,20 +122,23 @@ socket.on('incorrect click', function(data) {
 
 $('body').on('click', '.incorrect', function() {
   if ($('.red').length === 1) {
-    getQuestion();
+    getQuestionTie();
   }
 })
+
+
+socket.on('get score', function(score){
+  $('#score').text(score);
+})
+
 //ROOM URL PSEUDOCODE
+
 $startBtn.on('click', function(){
   var randURL = '/game/'
   randURL += randWord()
  $('form').attr('action', `${randURL}`);
 });
 
-// $joinBtn.on('click', function(){
-//   var randURL = '/game/';
-//  $('form')[1].attr('action', `${randURL}`);
-// });
 
 //Profile Update rendering
 var $profEdit = $('.profileEdit');

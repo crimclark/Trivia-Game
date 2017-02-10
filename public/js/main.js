@@ -150,9 +150,12 @@ $startBtn.on('click', function(){
   // ajax request to send the category to server '/game'
   var cat = $('select').val()
 
-  var randURL = '/game/'
-  randURL += randWord()
- $('form').attr('action', `${randURL}?category=${cat}`);
+  if(cat != 'selectOne') {
+    var randURL = '/game/'
+    randURL += randWord()
+    $('form').attr('action', `${randURL}?category=${cat}`);
+  }
+
 });
 
 

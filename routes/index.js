@@ -37,7 +37,7 @@ function getUsername(id, callback) {
 
 router.get('/game/:id', (req, res, next) => {
    if (!req.session.user) {
-    res.redirect('/login')
+    res.redirect('/')
    }
    else {
   var cat = req.query.category

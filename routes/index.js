@@ -111,9 +111,13 @@ router.get('/user', (req, res, next) => {
 });
 
 router.get('/browse', (req, res, next) => {
-  Profile.find({}, (err, allData) => {
-    res.render('browse',  { title: 'browseProfiles', profile: allData, avatar: req.session.user.image.url});
-  });
+  if (!req.session.user) {
+    res.redirect('/')
+  } else {
+    Profile.find({}, (err, allData) => {
+      res.render('browse',  { title: 'browseProfiles', profile: allData, avatar: req.session.user.image.url});
+    });
+  }
 });
 
 router.get('/user/:id', (req, res, next) => {

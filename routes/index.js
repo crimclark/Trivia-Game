@@ -114,6 +114,7 @@ router.delete('/game/:id', (req, res, next) => {
     if (err) {
       console.log(err);
     }
+    console.log(`The gameroom ${fullUrl} has been deleted!!!`);
   });
 });
 

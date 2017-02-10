@@ -34,6 +34,7 @@ router.get('/me', (req, res, next) => {
           _id: req.session.user.id,
           name: req.session.user.name.givenName,
           avatar: req.session.user.image.url,
+          score: { gamesWon: 0, gamesPlayed: 0}
         })
         player.save();
       }

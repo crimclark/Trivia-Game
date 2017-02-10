@@ -6,7 +6,6 @@ function sockets(io) {
     console.log('a user connected');
 
     socket.on('room', function(data) {
-      // console.log("**data** ", data);
       var roomName = data.room;
 
       socket.join(roomName);
@@ -23,13 +22,11 @@ function sockets(io) {
           for (var id in player) {
             if (player[id] === socket.id) {
               player.score += 1;
-              console.log("**player** ", player);
               currentPlayer = player;
               io.sockets.connected[socket.id].emit('get score', currentPlayer.score);
             }
           }
         })
-        console.log(currentPlayer);
         io.to(roomName).emit('correct click', data);
       })
 

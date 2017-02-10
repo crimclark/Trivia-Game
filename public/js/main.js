@@ -28,29 +28,12 @@ var player = {
   score: 0
 }
 
-// var counter = $('.counter').text()
-// function addToCounter() {
-//   counter++
-//   $('.counter').text(counter);
-
-//   if (counter === 11) {
-//     html = '<div class="container scoreboard"><h1>GAME OVER</h1><h3>*USER* WINS</h3><h5>User1 Score: ##</h5><h5>User2 Score: ##</h5></div>';
-//     $('.container').html(html);
-//     $.ajax({
-//       url: $('#gameUrl').text(),
-//       type: 'delete',
-//     })
-//   }
-// }
-
 var counter = $('.counter').text()
 function addToCounter() {
   counter++
   $('.counter').text(counter);
 
   if (counter === 11) {
-    // html = '<div class="container scoreboard"><h1>GAME OVER</h1><h3>*USER* WINS</h3><h5>User1 Score: ##</h5><h5>User2 Score: ##</h5></div>';
-    // $('.container').html(html);
     $.ajax({
       url: $('#gameUrl').text(),
       type: 'delete',
@@ -60,7 +43,12 @@ function addToCounter() {
 }
 
 socket.on('score card', function(players){
-  html = '<div class="container scoreboard"><h1>GAME OVER</h1><h3>*USER* WINS</h3>'
+
+  players.sort(function(a, b){
+    return b.score - a.score;
+  })
+
+  html = '<div class="container scoreboard"><h1>GAME OVER</h1><h3>' + players[0].name + ' WINS</h3>';
 
   for (var i = 0; i < players.length; i++) {
     html += '<h5>' + players[i].name + ' Score: ' + players[i].score + '</h5>';
@@ -107,14 +95,6 @@ function getQuestionTie() {
 socket.on('get question', function(question){
   renderHtml(question);
 })
-
-// function getQuestiontie(answer) {
-//   $.get('/question', function(question) {
-//     socket.emit('correct click', {question: question, answer: answer, score: playerScore});
-//     console.log(playerScore);
-//     console.log(socket.id);
-//   })
-// }
 
 // CORRECT ANSWER CLICK
 $('body').on('click', '.correct', function(event) {

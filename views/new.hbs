@@ -5,8 +5,9 @@
 </nav>
 <div class="container">
   <h1>{{ title }}</h1>
-  <form method="POST" action="/">
-  <select id="categories" name="category">
+
+  <form method="GET">
+  <select id="categories" name="category" required>
     <option value="selectOne">selectCategory:</option>
     <option value="9">General Knowledge</option>
     <option value="29">Entertainment: Comics</option>

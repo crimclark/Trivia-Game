@@ -11,8 +11,8 @@
     <input id="nameReplace" name="newName" class="profileEdit" placeholder="update username">
     <button type="submit" class="profileEdit">submit</button>
   </form>
-  <p>gamesWon: {{ wins }}</p>
-  <p>gamesPlayed: {{ totalGames }}</p>
+  <p>gamesWon: {{ info.score.gamesWon }}</p>
+  <p>gamesPlayed: {{ info.score.gamesPlayed }}</p>
   <a href="/auth/logout">logout</a>
 </div>
 

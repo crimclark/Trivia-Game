@@ -49,7 +49,20 @@ function sockets(io) {
             }
           }
         })
-        io.to(roomName).emit('score card', currentPlayers)
+        currentPlayers.sort(function(a, b){
+          return b.score - a.score;
+        })
+
+        var winner = currentPlayers[0];
+        var loser = currentPlayers[1];
+
+        io.sockets.connected[winner.id].emit('score card winner', {winner: winner, loser: loser});
+
+        if (loser) {
+          io.sockets.connected[loser.id].emit('score card loser', {winner: winner, loser: loser});
+        }
+
+        // io.to(roomName).emit('score card', currentPlayers)
       })
 
       socket.on('disconnect', function(){

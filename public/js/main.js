@@ -57,7 +57,8 @@ function renderHtml(question) {
 }
 
 function getQuestion(answer) {
-  $.get('/question', function(question) {
+  var cat = $('#category').text()
+  $.get(`/question?category=${cat}`, function(question) {
     socket.emit('correct click', {question: question, answer: answer, score: playerScore});
     console.log(playerScore);
     console.log(socket.id);
@@ -65,7 +66,8 @@ function getQuestion(answer) {
 }
 
 function getQuestionTie() {
-  $.get('/question', function(question) {
+  var cat = $('#category').text()
+  $.get(`/question?category=${cat}`, function(question) {
     socket.emit('get question', question);
     console.log(playerScore);
     console.log(socket.id);
@@ -131,16 +133,15 @@ socket.on('get score', function(score){
 })
 
 //ROOM URL PSEUDOCODE
-
 $startBtn.on('click', function(){
   // user selects a category from dropdown menu
   // on start button click, grab the value of selected category option
   // ajax request to send the category to server '/game'
-
+  var cat = $('select').val()
 
   var randURL = '/game/'
   randURL += randWord()
- $('form').attr('action', `${randURL}`);
+ $('form').attr('action', `${randURL}?category=${cat}`);
 });
 
 

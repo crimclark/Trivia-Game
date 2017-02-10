@@ -33,7 +33,8 @@ router.post('/', (req, res, next) => {
 })
 
 router.get('/question', (req, res, next) => {
-  getQuestion(function(data, question) {
+  var cat = req.query.category
+  getQuestion(cat, function(data, question) {
     answerShuffle.answerShuffle(data, function(shuffleData) {
       res.send({question: question, answers: shuffleData});
     });
@@ -41,6 +42,7 @@ router.get('/question', (req, res, next) => {
 });
 
 router.get('/game/:id', (req, res, next) => {
+  var cat = req.query.category
   var fullUrl = '/game/' + req.params.id;
   // test /game/XIttXxHc
   gameRooms.find({url: fullUrl }, function(err, results) {
@@ -48,25 +50,26 @@ router.get('/game/:id', (req, res, next) => {
       console.log(err);
     }
     if (results.length === 0) {
-      getQuestion('query here', function(data, question) {
+      getQuestion(cat, function(data, question) {
         answerShuffle.answerShuffle(data, function(shuffleData) {
           var gameRoom = new gameRooms({
             url: fullUrl,
             activeUsers: 1,
             firstQuestion: {
               question: question,
-              answers: shuffleData
+              answers: shuffleData,
+              category: cat
             },
           });
           gameRoom.save();
-          res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl});
+          res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl, category: cat});
           });
         });
       }
       else if(results) {
         gameRooms.find({url: fullUrl}, function(err, results) {
           var formatted_results = results[0].firstQuestion[0];
-         res.render('game', {question: formatted_results.question, answers: formatted_results.answers});
+         res.render('game', {question: formatted_results.question, answers: formatted_results.answers, category: cat});
         });
       }
     });

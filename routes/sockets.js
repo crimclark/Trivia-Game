@@ -5,12 +5,14 @@ function sockets(io) {
 
     console.log('a user connected');
 
+
     socket.on('room', function(data) {
       var roomName = data.room;
 
       socket.join(roomName);
 
       players.push(data.player);
+      console.log('connect players are', players);
 
       console.log('joined room ', roomName);
       var room = io.sockets.adapter.rooms[roomName];
@@ -46,14 +48,16 @@ function sockets(io) {
           for (var room in player) {
             if (player[room] === roomName) {
               currentPlayers.push(player);
-              var i = players.indexOf(player);
-              players.splice(i, 1);
+              // var i = players.indexOf(player);
+              // players.splice(i, 1);
             }
           }
         })
         currentPlayers.sort(function(a, b){
           return b.score - a.score;
         })
+
+        console.log('total players are', players);
 
         var winner = currentPlayers[0];
         var loser = currentPlayers[1];
@@ -79,6 +83,7 @@ function sockets(io) {
             }
           }
         })
+        console.log('total players are', players);
       })
     })
   })

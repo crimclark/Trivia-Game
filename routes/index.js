@@ -56,10 +56,10 @@ router.get('/game/:id', (req, res, next) => {
             getUsername(req.session.user.id, function(name){
               console.log('name is ' + name);
               res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl, name: name});
-            }) else {
+            })
+          } else {
               res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl, name: 'Guest'});
             }
-          }
           });
         });
       }

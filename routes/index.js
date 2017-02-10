@@ -60,7 +60,7 @@ router.get('/game/:id', (req, res, next) => {
               });
               gameRoom.save();
               getUsername(req.session.user.id, function(name){
-                res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl, name: name, category: cat, playerMode: req.query.playerMode});
+                res.render('game', {question: question, answers: shuffleData, gameUrl: fullUrl, name: name, category: cat, playerMode: req.query.playerMode, avatar: req.session.user.image.url});
               });
             });
           });
@@ -68,7 +68,7 @@ router.get('/game/:id', (req, res, next) => {
             gameRooms.find({url: fullUrl}, function(err, results) {
               var formatted_results = results[0].firstQuestion[0];
               getUsername(req.session.user.id, function(name){
-                res.render('game', {question: formatted_results.question, answers: formatted_results.answers, name: name, category: cat});
+                res.render('game', {question: formatted_results.question, answers: formatted_results.answers, name: name, category: cat, avatar: req.session.user.image.url});
               });
             });
           }

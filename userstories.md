@@ -25,6 +25,8 @@
 - [x] Users can update their own username from their 'profile' page
 - [x] Users can view their total games played and games won
 - [x] Visiting '/___.json' will expose one JSON model
-- **Only two players can join a multiplayer game room at a time
-- **Authorization middleware prevents users from updating each others' usernames
-- **Authorization middleware prevents users from deleting each others' profiles
+
+### Niceties & Extra Features
+- Only two players can join a multiplayer game room at a time
+- Authorization middleware prevents users from updating each others' usernames
+- Authorization middleware prevents users from deleting each others' profiles

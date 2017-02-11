@@ -50,16 +50,17 @@ to play in single-player mode or challenge a friend in a multiplayer game.
 - Mongo
 - Express
 - Node.js
-- Heroku
+- [Heroku](https://arcane-wave-24103.herokuapp.com/)
 - [Google API](https://console.developers.google.com/apis/library)
 - [Open Trivia DB API](https://opentdb.com/api_config.php)
 - [Skeleton CSS](http://getskeleton.com/):skull: 
 - [GitHub](https://github.com/WDI-DTLA-41-Group-3/Trivia-Game):octocat: 
 - [Project Board](https://github.com/WDI-DTLA-41-Group-3/Trivia-Game/projects/2)
+
+### User Stories 
 - [User Stories & App Features](/userstories.md)
 
 ### Wireframes
-
 - ![Wireframe #1](http://i.imgur.com/twJZsCN.jpg?2)
 - ![Wireframe #2](http://i.imgur.com/mw3L4IP.jpg?2)
 - ![Wireframe #3](http://i.imgur.com/PMmLOYg.jpg?1)
@@ -67,11 +68,9 @@ to play in single-player mode or challenge a friend in a multiplayer game.
 - ![Wireframe #5](http://i.imgur.com/pyayjRl.jpg?2)
 
 ### ERD
-
 ![ERD](http://i.imgur.com/iExY0Dl.png)
 
 ### RESTful API
-
 ![User Model](http://i.imgur.com/4mfueYi.png)
 
 ### Approach

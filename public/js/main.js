@@ -38,7 +38,7 @@ var counter = $('.counter').text()
 function addToCounter() {
   counter++;
   $('.counter').text(counter);
-  if (counter === 11) {
+  if (counter === 10) {
     $.ajax({
       url: $('#gameUrl').text(),
       type: 'delete',
@@ -66,7 +66,7 @@ socket.once('score card winner', function(players){
       console.log('sent put request');
       console.log('put score for winner')
       //putScores(winner, loser);
-      putScores(winner, loser)
+      putScores(winner, loser);
     }
 
     // if(players.loser.id === socket.id) {

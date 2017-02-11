@@ -48,8 +48,6 @@ function sockets(io) {
           for (var room in player) {
             if (player[room] === roomName) {
               currentPlayers.push(player);
-              // var i = players.indexOf(player);
-              // players.splice(i, 1);
             }
           }
         })
@@ -59,6 +57,8 @@ function sockets(io) {
 
         console.log('total players are', players);
 
+        console.log('current players are', currentPlayers);
+
         var winner = currentPlayers[0];
         var loser = currentPlayers[1];
 
@@ -67,10 +67,6 @@ function sockets(io) {
         if (loser) {
           io.sockets.connected[loser.id].emit('score card loser', {winner: winner, loser: loser});
         }
-
-
-
-        // io.to(roomName).emit('score card', currentPlayers)
       })
 
       socket.on('disconnect', function(){

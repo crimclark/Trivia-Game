@@ -5,12 +5,14 @@ function sockets(io) {
 
     console.log('a user connected');
 
+
     socket.on('room', function(data) {
       var roomName = data.room;
 
       socket.join(roomName);
 
       players.push(data.player);
+      console.log('connect players are', players);
 
       console.log('joined room ', roomName);
       var room = io.sockets.adapter.rooms[roomName];
@@ -53,6 +55,10 @@ function sockets(io) {
           return b.score - a.score;
         })
 
+        console.log('total players are', players);
+
+        console.log('current players are', currentPlayers);
+
         var winner = currentPlayers[0];
         var loser = currentPlayers[1];
 
@@ -61,12 +67,19 @@ function sockets(io) {
         if (loser) {
           io.sockets.connected[loser.id].emit('score card loser', {winner: winner, loser: loser});
         }
-
-        // io.to(roomName).emit('score card', currentPlayers)
       })
 
       socket.on('disconnect', function(){
         console.log('disconnected. total connections in ' + roomName + ': ' + room.length);
+        players.forEach (function(player) {
+          for (var id in player) {
+            if (player[id] === socket.id) {
+              var i = players.indexOf(player);
+              players.splice(i, 1);
+            }
+          }
+        })
+        console.log('total players are', players);
       })
     })
   })

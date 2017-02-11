@@ -1,3 +1,7 @@
+// icon art credit:
+console.log('Search by thiyagu from the Noun Project');
+console.log('Brain by emilegraphics from the Noun Project');
+
 var socket = io();
 var $startBtn = $('#startBtn');
 var $joinBtn = $('#joinBtn');
@@ -6,7 +10,6 @@ var $incorrect = $('.incorrect');
 var userName = $('#username').val();
 var $playerMode = $('#gameMode').text();
 console.log(userName);
-
 
 var room = window.location.pathname;
 

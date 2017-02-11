@@ -105,10 +105,14 @@ router.get('/question', (req, res, next) => {
 });
 
 router.get('/user', (req, res, next) => {
-  var userId = req.session.user.id;
-  Profile.findOne({_id: userId}, (err, userData) => {
-    res.render('profile', {title: 'playerProfile', info: userData, avatar: req.session.user.image.url});
-  });
+  if (!req.session.user) {
+    res.redirect('/');
+  } else {
+    var userId = req.session.user.id;
+    Profile.findOne({_id: userId}, (err, userData) => {
+      res.render('profile', {title: 'playerProfile', info: userData, avatar: req.session.user.image.url});
+    });
+  }
 });
 
 router.get('/browse', (req, res, next) => {

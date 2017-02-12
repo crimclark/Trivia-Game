@@ -69,7 +69,7 @@ router.get('/game/:id', (req, res, next) => {
             gameRooms.find({url: fullUrl}, function(err, results) {
               var formatted_results = results[0].firstQuestion[0];
               getUsername(req.session.user.id, function(name){
-                res.render('game', {question: formatted_results.question, answers: formatted_results.answers, name: name, category: cat, playerMode: req.query.playerMode, mongoId: req.session.user.id, avatar: req.session.user.image.url});
+                res.render('game', {question: formatted_results.question, answers: formatted_results.answers, name: name, category: cat, playerMode: results[0].gameMode, mongoId: req.session.user.id, avatar: req.session.user.image.url});
               });
             });
           }

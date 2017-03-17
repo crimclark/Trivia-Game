@@ -8,14 +8,11 @@ var $playerMode = $('#gameMode').text();
 
 var mongoId = $('#mongoId').text();
 
-console.log(userName);
-
 var room = window.location.pathname;
 
 var startBtn = $('#start-btn');
 
 socket.on('connect', function() {
-  console.log('client connected');
   var player = {
     id: socket.id,
     name: userName,
@@ -65,17 +62,8 @@ socket.once('score card winner', function(players){
             loser.name + ' Score: ' + loser.score + '</h5></div>'
     $('.container').html(html);
     if (players.winner.id === socket.id) {
-      console.log('sent put request');
-      console.log('put score for winner')
-      //putScores(winner, loser);
       putScores(winner, loser);
     }
-
-    // if(players.loser.id === socket.id) {
-    //   console.log('put score for loser')
-    //   putScores(loser)
-
-    // }
   } else {
     html = '<div class="container scoreboard"><h1>GAME RESULTS</h1><h5> Your Score: ' + winner.score + '</h5>';
     $('.container').html(html);
@@ -116,7 +104,6 @@ function renderHtml(question) {
   // Counter
     addToCounter();
     addEventListeners();
-  console.log($playerMode);
 }
 
 function getQuestion(emitTo, answer) {
